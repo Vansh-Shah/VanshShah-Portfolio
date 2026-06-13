@@ -1,0 +1,26 @@
+# ── Private notes — never commit these ───────────────────────────────────
+NOTES.md
+GIT-GUIDE.md
+deploy.bat
+
+# ── Dependencies ──────────────────────────────────────────────────────────
+node_modules/
+
+# ── Vite cache ────────────────────────────────────────────────────────────
+.vite/
+
+# ── Environment variables (if you ever add a .env file) ──────────────────
+.env
+.env.local
+.env.*.local
+
+# ── OS files ─────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Editor files ─────────────────────────────────────────────────────────
+.vscode/settings.json
+.idea/
+*.swp
+*.swo

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vansh-shah.github.io/VanshShah-Portfolio/sitemap.xml
