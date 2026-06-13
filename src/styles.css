@@ -77,29 +77,32 @@ body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; ov
   50%     { background-position: 100% 50%; }
 }
 @keyframes dot-pulse  { 0%,100% { opacity:1; } 50% { opacity:.35; } }
-@keyframes fadeIn     { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+@keyframes fadeIn     { from { opacity:0; transform:translateY(18px) scale(.992); } to { opacity:1; transform:none; } }
 @keyframes popIn      { from { opacity:0; transform:scale(.95) translateY(4px); } to { opacity:1; transform:none; } }
 @keyframes slideDown  { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:none; } }
+@keyframes heroRise   { from { opacity:0; transform:translateY(24px); filter:blur(6px); } to { opacity:1; transform:none; filter:blur(0); } }
 
 /* Scroll-reveal */
 .reveal {
   opacity: 0;
-  transform: translateY(22px);
-  transition: opacity .55s cubic-bezier(.22,1,.36,1), transform .55s cubic-bezier(.22,1,.36,1);
+  transform: translateY(32px);
+  filter: blur(4px);
+  transition: opacity .7s var(--ease-out), transform .7s var(--ease-out), filter .7s var(--ease-out);
 }
-.reveal.visible { opacity:1; transform:none; }
+.reveal.visible { opacity:1; transform:none; filter:blur(0); }
 
 .reveal-group > * {
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity .5s cubic-bezier(.22,1,.36,1), transform .5s cubic-bezier(.22,1,.36,1);
+  transform: translateY(26px);
+  filter: blur(3px);
+  transition: opacity .6s var(--ease-out), transform .6s var(--ease-out), filter .6s var(--ease-out);
 }
-.reveal-group.visible > *:nth-child(1) { opacity:1; transform:none; transition-delay:.05s; }
-.reveal-group.visible > *:nth-child(2) { opacity:1; transform:none; transition-delay:.13s; }
-.reveal-group.visible > *:nth-child(3) { opacity:1; transform:none; transition-delay:.21s; }
-.reveal-group.visible > *:nth-child(4) { opacity:1; transform:none; transition-delay:.29s; }
-.reveal-group.visible > *:nth-child(5) { opacity:1; transform:none; transition-delay:.37s; }
-.reveal-group.visible > *:nth-child(6) { opacity:1; transform:none; transition-delay:.45s; }
+.reveal-group.visible > *:nth-child(1) { opacity:1; transform:none; filter:blur(0); transition-delay:.04s; }
+.reveal-group.visible > *:nth-child(2) { opacity:1; transform:none; filter:blur(0); transition-delay:.11s; }
+.reveal-group.visible > *:nth-child(3) { opacity:1; transform:none; filter:blur(0); transition-delay:.18s; }
+.reveal-group.visible > *:nth-child(4) { opacity:1; transform:none; filter:blur(0); transition-delay:.25s; }
+.reveal-group.visible > *:nth-child(5) { opacity:1; transform:none; filter:blur(0); transition-delay:.32s; }
+.reveal-group.visible > *:nth-child(6) { opacity:1; transform:none; filter:blur(0); transition-delay:.39s; }
 
 /* ─────────────────────────────────────────────
    Reduced motion — respect user preference
@@ -111,7 +114,7 @@ body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; ov
     transition-duration: .001ms !important;
     scroll-behavior: auto !important;
   }
-  .reveal, .reveal-group > * { opacity: 1 !important; transform: none !important; }
+  .reveal, .reveal-group > * { opacity: 1 !important; transform: none !important; filter: none !important; }
   .name-banner::before { animation: none !important; }
 }
 
@@ -128,7 +131,7 @@ html, body { height: 100%; }
   transition: background .3s;
 }
 #main { flex: 1; }
-.page { animation: fadeIn .35s ease both; }
+.page { animation: fadeIn .5s var(--ease-out) both; }
 
 /* ─────────────────────────────────────────────
    Layout helpers
