@@ -4,8 +4,6 @@
 
 **Assistant Technical Support Manager · Ultradata Australia · Melbourne, VIC**
 
-[![Available for opportunities](https://img.shields.io/badge/●%20Available%20for%20opportunities-16A34A?style=flat&labelColor=16A34A&color=16A34A&logoColor=white)](mailto:svansh3212@gmail.com)
-
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://linkedin.com/in/vansh-shah-840b331a6)
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white)](https://github.com/Vansh-Shah)
 [![Email](https://img.shields.io/badge/Email-svansh3212%40gmail.com-EA4335?style=flat&logo=gmail&logoColor=white)](mailto:svansh3212@gmail.com)
