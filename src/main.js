@@ -3,7 +3,7 @@
 import './styles.css';
 import { initUI, initReveal, animateCounters } from './components/ui.js';
 import { renderFooter }                         from './components/footer.js';
-import { initRouter, goTo }                     from './components/router.js';
+import { initRouter, navigateFromHash, goTo }   from './components/router.js';
 
 window.goTo           = goTo;
 window.initReveal     = initReveal;
@@ -12,4 +12,4 @@ window.animateCounters= animateCounters;
 initUI();
 renderFooter();
 initRouter();
-goTo('home', false);
+navigateFromHash(); // respects deep links like #work or #projects/ssl-monitor

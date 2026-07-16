@@ -14,7 +14,7 @@ function Chapter({ chapter, period, body }, index) {
         <div class="chapter-period">${period}</div>
       </div>
       <div class="chapter-body">
-        <div class="sy chapter-title">${chapter}</div>
+        <h3 class="sy chapter-title">${chapter}</h3>
         <p class="chapter-text">${body}</p>
       </div>
     </div>`;

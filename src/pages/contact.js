@@ -29,13 +29,6 @@ const SOCIAL_LINKS = [
   },
 ];
 
-const LOOKING_FOR = [
-  'Senior Technical Roles',
-  'Cybersecurity Opportunities',
-  'Fintech & Banking',
-  'Security Leadership',
-];
-
 // Formspree endpoint — sign up at https://formspree.io and replace YOUR_FORM_ID
 const FORMSPREE_URL = 'https://formspree.io/f/mrevokzl';
 
@@ -58,25 +51,33 @@ function ContactForm() {
   return html`
     <form class="contact-form" id="contactForm" novalidate>
       <div class="form-group">
-        <label class="form-label" for="cf-name">Name</label>
+        <label class="form-label" for="cf-name">Name <span class="req" aria-hidden="true">*</span></label>
         <input class="form-input" type="text" id="cf-name"
-               placeholder="Your name" autocomplete="name" required />
+               placeholder="Your name" autocomplete="name" required
+               aria-required="true" aria-describedby="cf-name-err" />
+        <p class="form-error" id="cf-name-err" aria-live="polite"></p>
       </div>
       <div class="form-group">
-        <label class="form-label" for="cf-email">Email</label>
+        <label class="form-label" for="cf-email">Email <span class="req" aria-hidden="true">*</span></label>
         <input class="form-input" type="email" id="cf-email"
-               placeholder="your@email.com" autocomplete="email" required />
+               placeholder="your@email.com" autocomplete="email" required
+               aria-required="true" aria-describedby="cf-email-err" />
+        <p class="form-error" id="cf-email-err" aria-live="polite"></p>
       </div>
       <div class="form-group">
-        <label class="form-label" for="cf-subject">Subject</label>
+        <label class="form-label" for="cf-subject">Subject <span class="req" aria-hidden="true">*</span></label>
         <input class="form-input" type="text" id="cf-subject"
-               placeholder="e.g. Resume Request, Job Opportunity, Collaboration" required />
+               placeholder="e.g. Resume Request, Job Opportunity, Collaboration" required
+               aria-required="true" aria-describedby="cf-subject-err" />
+        <p class="form-error" id="cf-subject-err" aria-live="polite"></p>
       </div>
       <div class="form-group">
-        <label class="form-label" for="cf-message">Message</label>
+        <label class="form-label" for="cf-message">Message <span class="req" aria-hidden="true">*</span></label>
         <textarea class="form-input form-textarea" id="cf-message"
                   placeholder="Tell me what you're thinking…"
-                  rows="5" required></textarea>
+                  rows="5" required
+                  aria-required="true" aria-describedby="cf-message-err"></textarea>
+        <p class="form-error" id="cf-message-err" aria-live="polite"></p>
       </div>
       <button type="submit" class="form-submit" id="formSubmit">
         <span id="submitLabel">Send message</span>
@@ -93,12 +94,6 @@ function Sidebar() {
         <p class="sidebar-label">Find me on</p>
         <div class="social-cards">
           ${SOCIAL_LINKS.map(SocialCard).join('')}
-        </div>
-      </div>
-      <div class="reveal looking-for-card">
-        <div class="sy looking-for-title">What I'm looking for</div>
-        <div class="looking-for-pills">
-          ${LOOKING_FOR.map(t => html`<span class="tag-pill">${t}</span>`).join('')}
         </div>
       </div>
     </div>`;
@@ -142,22 +137,54 @@ export function initContact() {
   const submitIcon= document.getElementById('submitIcon');
   if (!form) return;
 
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const FIELDS = [
+    { id: 'cf-name',    check: v => v ? '' : 'Please enter your name.' },
+    { id: 'cf-email',   check: v => !v ? 'Please enter your email address.'
+                                : !EMAIL_RE.test(v) ? 'That email address doesn\'t look right — check for typos.' : '' },
+    { id: 'cf-subject', check: v => v ? '' : 'Please add a subject.' },
+    { id: 'cf-message', check: v => v ? '' : 'Please write a message.' },
+  ];
+
+  function setFieldError(id, msg) {
+    const input = document.getElementById(id);
+    const err   = document.getElementById(id + '-err');
+    input.classList.toggle('form-input--error', !!msg);
+    input.setAttribute('aria-invalid', msg ? 'true' : 'false');
+    if (err) err.textContent = msg;
+  }
+
+  function validateField({ id, check }) {
+    const msg = check(document.getElementById(id).value.trim());
+    setFieldError(id, msg);
+    return !msg;
+  }
+
+  // Validate on blur (not on keystroke), clear the error as soon as it's fixed
+  FIELDS.forEach(f => {
+    const input = document.getElementById(f.id);
+    input.addEventListener('blur', () => validateField(f));
+    input.addEventListener('input', () => {
+      if (input.classList.contains('form-input--error')) validateField(f);
+    });
+  });
+
   form.addEventListener('submit', async e => {
     e.preventDefault();
+
+    // Validate all fields; focus the first invalid one
+    const firstInvalid = FIELDS.filter(f => !validateField(f))[0];
+    if (firstInvalid) {
+      document.getElementById(firstInvalid.id).focus();
+      showNote('Please fix the highlighted fields.', 'error');
+      return;
+    }
+    showNote('', 'success');
 
     const name    = document.getElementById('cf-name').value.trim();
     const email   = document.getElementById('cf-email').value.trim();
     const subject = document.getElementById('cf-subject').value.trim();
     const message = document.getElementById('cf-message').value.trim();
-
-    if (!name || !email || !subject || !message) {
-      showNote('Please fill in all fields.', 'error');
-      return;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      showNote('Please enter a valid email address.', 'error');
-      return;
-    }
 
     submitBtn.disabled    = true;
     submitLbl.textContent = 'Sending…';

@@ -71,7 +71,7 @@ function UnswBlock() {
       <div class="edu-header">
         <div>
           <span class="edu-status edu-status--accent">${UNSW.status}</span>
-          <div class="sy edu-degree">${UNSW.degree}</div>
+          <h2 class="sy edu-degree">${UNSW.degree}</h2>
           <div class="edu-specialisation">${UNSW.specialisation}</div>
           <div class="edu-institution">${UNSW.institution}</div>
         </div>
@@ -97,7 +97,7 @@ function RmitBlock() {
   return html`
     <div class="reveal edu-block">
       <span class="edu-status edu-status--muted">${RMIT.status}</span>
-      <div class="sy edu-degree">${RMIT.degree}</div>
+      <h2 class="sy edu-degree">${RMIT.degree}</h2>
       <div class="edu-institution">${RMIT.institution}</div>
 
       <p class="reveal edu-body">${RMIT.body}</p>

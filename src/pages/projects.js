@@ -71,24 +71,37 @@ export function initProjects() {
 
 // ── Project detail routing ────────────────────────────────────────────────
 
-function renderProjectDetail(id) {
-  const DETAIL_PAGES = {
-    'ssl-monitor':          renderSSLMonitor,
-    'iis-log-viewer':       renderIISLogViewer,
-    'uvdiag-lock-analysis': renderUVDiagLockAnalysis,
-    'qr-security':          renderQRSecurity,
-    'portfolio':            renderPortfolioDetail,
-    'robocup':              renderRoboCupDetail,
-  };
+const DETAIL_PAGES = {
+  'ssl-monitor':          () => renderSSLMonitor(),
+  'iis-log-viewer':       () => renderIISLogViewer(),
+  'uvdiag-lock-analysis': () => renderUVDiagLockAnalysis(),
+  'qr-security':          () => renderQRSecurity(),
+  'portfolio':            () => renderPortfolioDetail(),
+  'robocup':              () => renderRoboCupDetail(),
+};
+
+// Opens a project detail view. Pushes #projects/<id> so details are
+// deep-linkable, shareable, and reachable via browser back/forward.
+export function openProject(id, pushState = true) {
   const renderer = DETAIL_PAGES[id];
-  if (!renderer) return;
+  if (!renderer) return false;
+
+  if (pushState) {
+    history.pushState({ page: 'projects', projectId: id }, '', `#projects/${id}`);
+  }
 
   document.getElementById('main').innerHTML = renderer();
   window.scrollTo(0, 0);
+  document.getElementById('main')?.focus();
   requestAnimationFrame(() => requestAnimationFrame(() => {
     window.initReveal?.();
     initProjectDetail();
   }));
+  return true;
+}
+
+function renderProjectDetail(id) {
+  openProject(id);
 }
 
 export function initProjectDetail() {
@@ -161,7 +174,7 @@ function renderSSLMonitor() {
           <div class="reveal project-detail-header">
             <div class="project-detail-meta">
               <span class="project-tag">Python · Security · Desktop GUI</span>
-              <span class="project-status" style="color:#16A34A">Live</span>
+              <span class="project-status" style="color:var(--ok)">Live</span>
             </div>
             <h1 class="sy project-detail-title">SSL/TLS Certificate Monitor</h1>
             <p class="project-detail-sub">
@@ -313,7 +326,7 @@ function renderIISLogViewer() {
           <div class="reveal project-detail-header">
             <div class="project-detail-meta">
               <span class="project-tag">JavaScript · Log Analysis · Open Source</span>
-              <span class="project-status" style="color:#16A34A">Live</span>
+              <span class="project-status" style="color:var(--ok)">Live</span>
             </div>
             <h1 class="sy project-detail-title">IIS Log Viewer</h1>
             <p class="project-detail-sub">
@@ -444,7 +457,7 @@ function renderUVDiagLockAnalysis() {
           <div class="reveal project-detail-header">
             <div class="project-detail-meta">
               <span class="project-tag">JavaScript · UniVerse · Diagnostics</span>
-              <span class="project-status" style="color:#D97706">Internal Tool</span>
+              <span class="project-status" style="color:var(--warn)">Internal Tool</span>
             </div>
             <h1 class="sy project-detail-title">UVDiag Lock Analysis</h1>
             <p class="project-detail-sub">
@@ -543,7 +556,7 @@ function renderQRSecurity() {
           <div class="reveal project-detail-header">
             <div class="project-detail-meta">
               <span class="project-tag">Security Engineering · Research · UNSW</span>
-              <span class="project-status" style="color:#16A34A">Published</span>
+              <span class="project-status" style="color:var(--ok)">Published</span>
             </div>
             <h1 class="sy project-detail-title">Security Analysis of QR Codes in Digital Systems</h1>
             <p class="project-detail-sub">
@@ -646,7 +659,7 @@ function renderPortfolioDetail() {
           <div class="reveal project-detail-header">
             <div class="project-detail-meta">
               <span class="project-tag">Vite · Vanilla JS · GitHub Pages</span>
-              <span class="project-status" style="color:#16A34A">Live</span>
+              <span class="project-status" style="color:var(--ok)">Live</span>
             </div>
             <h1 class="sy project-detail-title">This Portfolio</h1>
             <p class="project-detail-sub">

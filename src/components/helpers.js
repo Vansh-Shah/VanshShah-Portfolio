@@ -10,7 +10,7 @@ export function secLabel(text) {
   return html`
     <div class="sec-lbl reveal">
       <span class="sec-num">—</span>
-      <p class="sec-tag">${text}</p>
+      <h1 class="sec-tag">${text}</h1>
     </div>`;
 }
 
@@ -77,7 +77,7 @@ export function jobEntry(job) {
     <div class="reveal">
       <div class="job-header">
         <div class="job-title-row">
-          <span class="sy job-title">${job.role}</span>
+          <h2 class="sy job-title">${job.role}</h2>
           ${job.badge ? html`<span class="job-badge">${job.badge}</span>` : ''}
         </div>
         <span class="job-dates">${job.dates}</span>
