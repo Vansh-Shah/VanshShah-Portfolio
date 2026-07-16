@@ -23,7 +23,7 @@ export function renderFooter() {
         <div class="footer-identity">
           <div class="sy footer-name">Vansh Shah</div>
           <div class="footer-sub">Assistant Technical Support Manager · Ultradata Australia</div>
-          <div class="footer-sub">Melbourne, VIC · Available for opportunities</div>
+          <div class="footer-sub">Melbourne, VIC</div>
         </div>
         <nav aria-label="Footer navigation" class="footer-nav">
           ${NAV_PAGES.map(NavLink).join('')}

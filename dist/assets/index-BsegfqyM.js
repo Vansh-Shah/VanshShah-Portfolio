@@ -11,7 +11,7 @@
         <div class="footer-identity">
           <div class="sy footer-name">Vansh Shah</div>
           <div class="footer-sub">Assistant Technical Support Manager · Ultradata Australia</div>
-          <div class="footer-sub">Melbourne, VIC · Available for opportunities</div>
+          <div class="footer-sub">Melbourne, VIC</div>
         </div>
         <nav aria-label="Footer navigation" class="footer-nav">
           ${te.map(_).join(``)}
@@ -43,11 +43,6 @@
 
       <section class="home-hero page-section">
         <div class="wrap">
-
-          <div class="avail-badge reveal">
-            <span class="avail-dot"></span>
-            Available for opportunities
-          </div>
 
           <div class="name-banner reveal">
             <h1 class="sy hero-name">

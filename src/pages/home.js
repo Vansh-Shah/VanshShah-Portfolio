@@ -51,11 +51,6 @@ export function renderHome() {
       <section class="home-hero page-section">
         <div class="wrap">
 
-          <div class="avail-badge reveal">
-            <span class="avail-dot"></span>
-            Available for opportunities
-          </div>
-
           <div class="name-banner reveal">
             <h1 class="sy hero-name">
               Vansh<br>
