@@ -50,7 +50,7 @@ export function renderProjects() {
           <div class="reveal coming-up-card">
             <div class="sy coming-up-title">Coming up</div>
             <p class="coming-up-body">
-              Incident response case studies · CTF writeups · Log analyser CLI
+              Incident response case studies · CTF writeups
             </p>
           </div>
 
@@ -73,10 +73,12 @@ export function initProjects() {
 
 function renderProjectDetail(id) {
   const DETAIL_PAGES = {
-    'ssl-monitor': renderSSLMonitor,
-    'qr-security': renderQRSecurity,
-    'portfolio':   renderPortfolioDetail,
-    'robocup':     renderRoboCupDetail,
+    'ssl-monitor':          renderSSLMonitor,
+    'iis-log-viewer':       renderIISLogViewer,
+    'uvdiag-lock-analysis': renderUVDiagLockAnalysis,
+    'qr-security':          renderQRSecurity,
+    'portfolio':            renderPortfolioDetail,
+    'robocup':              renderRoboCupDetail,
   };
   const renderer = DETAIL_PAGES[id];
   if (!renderer) return;
@@ -272,6 +274,245 @@ function renderSSLMonitor() {
                class="detail-link-btn detail-link-btn--primary">
               View full source on GitHub ↗
             </a>
+          </div>
+
+        </div>
+      </section>
+    </div>`;
+}
+
+// ── IIS Log Viewer detail page ────────────────────────────────────────────
+
+function renderIISLogViewer() {
+  const TECH_PILLS = [
+    'Vanilla JavaScript', 'HTML5 File API', 'Canvas histogram',
+    'Zero dependencies', 'Single file', 'MIT licensed', 'GitHub Pages',
+  ];
+
+  const FEATURES = [
+    ['Filter, sort & search',       'Full-text search and per-column filtering across every parsed request — status codes, methods, URIs, IPs, and user agents. Sort any column instantly.'],
+    ['Client IP analysis',          'Aggregated view of traffic by client IP — request counts, error rates, and user agents per address. Built for answering "who is hitting this server?" fast.'],
+    ['User-agent analysis',         'Groups requests by user-agent string so browsers, monitoring probes, and automated clients separate out at a glance.'],
+    ['Timeline histogram',          'A request-volume histogram across the full log timespan. Drag to select a time window and every view filters to just that period — ideal for zooming into an incident.'],
+    ['Substatus & Win32 decoding',  'Translates raw IIS substatus and Win32 status codes into plain English — 500.19 becomes "configuration data is invalid" instead of a number you have to look up.'],
+    ['Endpoint aggregation',        'A per-endpoint rollup showing hit counts and error rates by route — the fastest way to spot a hot path or a consistently failing endpoint.'],
+  ];
+
+  const CODE = {
+    location: `%SystemDrive%\\inetpub\\logs\\LogFiles\\W3SVC<siteId>\\u_ex*.log`,
+    offline:  `git clone https://github.com/Vansh-Shah/iis-log-viewer.git\ncd iis-log-viewer\nstart index.html    # Windows\nopen index.html     # macOS`,
+  };
+
+  return html`
+    <div class="page">
+      <section class="page-section">
+        <div class="wrap">
+
+          ${backBtn()}
+
+          <div class="reveal project-detail-header">
+            <div class="project-detail-meta">
+              <span class="project-tag">JavaScript · Log Analysis · Open Source</span>
+              <span class="project-status" style="color:#16A34A">Live</span>
+            </div>
+            <h1 class="sy project-detail-title">IIS Log Viewer</h1>
+            <p class="project-detail-sub">
+              A single-file, fully client-side viewer for W3C IIS log files — built for
+              fast IP and user-agent triage in a banking support environment. Drop in a
+              log file and explore it without anything leaving your browser.
+            </p>
+            <div class="project-detail-links">
+              <a href="https://vansh-shah.github.io/iis-log-viewer/"
+                 target="_blank" rel="noopener noreferrer"
+                 class="detail-link-btn detail-link-btn--primary">Open Live Tool ↗</a>
+              <a href="https://github.com/Vansh-Shah/iis-log-viewer"
+                 target="_blank" rel="noopener noreferrer"
+                 class="detail-link-btn detail-link-btn--secondary">View on GitHub ↗</a>
+            </div>
+          </div>
+
+          <div class="divid"></div>
+
+          <div class="reveal project-section">
+            <h2 class="sy project-section-title">The Problem</h2>
+            <p class="project-section-body">
+              When a client-facing banking application misbehaves, the IIS logs usually
+              know why — but raw W3C log files are dense, wide, and painful to read.
+              The usual options are scrolling through Notepad, writing a one-off
+              PowerShell query, or installing a log analysis tool on a locked-down
+              support workstation where installing anything is a ticket in itself.
+            </p>
+            <p class="project-section-body">
+              This tool removes all of that friction. It's a single HTML file: open it
+              in any modern browser, drop in one or more log files, and start triaging.
+              No server, no upload, no dependencies, no install.
+            </p>
+          </div>
+
+          <div class="divid"></div>
+
+          <div class="project-section">
+            <div class="reveal">
+              <h2 class="sy project-section-title">Features</h2>
+            </div>
+            ${FeatureGrid(FEATURES)}
+          </div>
+
+          <div class="divid"></div>
+
+          <div class="reveal project-section">
+            <h2 class="sy project-section-title">Usage</h2>
+            <p class="project-section-body">
+              Use it online via GitHub Pages, or clone the repo and open
+              <code class="inline-code">index.html</code> directly — it works from a
+              file share or an offline support workstation with no network access.
+            </p>
+            <pre class="code-block">${CODE.offline}</pre>
+            <p class="project-section-body">
+              It expects W3C extended log files as produced by IIS
+              (<code class="inline-code">#Fields:</code> directive present), typically found at:
+            </p>
+            <pre class="code-block">${CODE.location}</pre>
+          </div>
+
+          <div class="divid"></div>
+
+          <div class="reveal project-section">
+            <h2 class="sy project-section-title">Privacy by Design</h2>
+            <p class="project-section-body">
+              All parsing happens in the browser. Log files are never transmitted
+              anywhere — which is exactly what makes the tool safe to use with
+              production logs containing real client IP addresses. For a support role
+              in banking, that constraint isn't a nice-to-have; it's the requirement
+              that shaped the whole architecture.
+            </p>
+          </div>
+
+          <div class="divid"></div>
+
+          <div class="reveal project-section">
+            <h2 class="sy project-section-title">Built With</h2>
+            <p class="project-section-body">
+              One HTML file. No frameworks, no build step, no dependencies.
+            </p>
+            <div class="tech-pills">
+              ${TECH_PILLS.map(t => html`<span class="tag-pill">${t}</span>`).join('')}
+            </div>
+          </div>
+
+          <div class="divid"></div>
+
+          <div class="reveal project-detail-footer">
+            <a href="https://vansh-shah.github.io/iis-log-viewer/"
+               target="_blank" rel="noopener noreferrer"
+               class="detail-link-btn detail-link-btn--primary">
+              Try it live ↗
+            </a>
+          </div>
+
+        </div>
+      </section>
+    </div>`;
+}
+
+// ── UVDiag Lock Analysis detail page ──────────────────────────────────────
+// Internal tool — write-up only. No source code, repo link, or download is
+// published for this project; the tool is internal to Ultradata.
+
+function renderUVDiagLockAnalysis() {
+  const INPUTS = [
+    ['Port status output',     'The uvdiag port status capture — which process is on which port, what it\'s running, and its current state.'],
+    ['LIST.READU EVERY',       'The full record and file lock table at capture time — who holds what, and who is waiting on whom.'],
+    ['Lock daemon log',        'Optional uvdlockd log ingestion for historical lock activity leading up to the capture.'],
+    ['Whole .tar.gz capture',  'Or skip all of the above and drop in the entire uvdiag archive — a minimal ustar/gzip reader built into the page unpacks it in the browser.'],
+  ];
+
+  const OUTPUTS = [
+    ['Blocker detection',   'Identifies the process (or processes) at the root of a lock chain — the one everyone else is actually waiting on — rather than just listing hundreds of waiters.'],
+    ['Deadlock detection',  'Walks the wait-for relationships to find genuine cycles, distinguishing a true deadlock from a long but healthy queue.'],
+    ['Wait-for graph',      'A visual graph of who waits on whom and for which locks — turning a wall of lock table text into something you can reason about in seconds.'],
+    ['Exportable report',   'The full analysis exports to Markdown, HTML, or PDF — ready to attach to an incident ticket or hand to a client as part of a post-incident summary.'],
+  ];
+
+  return html`
+    <div class="page">
+      <section class="page-section">
+        <div class="wrap">
+
+          ${backBtn()}
+
+          <div class="reveal project-detail-header">
+            <div class="project-detail-meta">
+              <span class="project-tag">JavaScript · UniVerse · Diagnostics</span>
+              <span class="project-status" style="color:#D97706">Internal Tool</span>
+            </div>
+            <h1 class="sy project-detail-title">UVDiag Lock Analysis</h1>
+            <p class="project-detail-sub">
+              A single-file, browser-based analyser for UniVerse uvdiag captures —
+              it turns raw lock table dumps into a blocker and deadlock report with
+              a wait-for graph, entirely offline.
+            </p>
+            <p class="project-detail-sub" style="font-size:0.85rem; opacity:0.6; margin-top:0.5rem;">
+              Built for internal use at Ultradata — the tool and its source are not publicly available.
+            </p>
+          </div>
+
+          <div class="divid"></div>
+
+          <div class="reveal project-section">
+            <h2 class="sy project-section-title">The Problem</h2>
+            <p class="project-section-body">
+              UniVerse underpins core banking environments, and when lock contention
+              hits one, the symptoms are immediate: sessions hang, batch jobs stall,
+              and users can't work. The standard diagnostic is a uvdiag capture — a
+              bundle of port status output, the full lock table, and daemon logs.
+              It contains the answer, but finding it manually means cross-referencing
+              hundreds of lines across several files while an incident is live.
+            </p>
+            <p class="project-section-body">
+              The core question in every lock incident is simple: <em>who is actually
+              blocking whom?</em> This tool answers it in seconds instead of an hour
+              of manual cross-referencing.
+            </p>
+          </div>
+
+          <div class="divid"></div>
+
+          <div class="project-section">
+            <div class="reveal">
+              <h2 class="sy project-section-title">What It Ingests</h2>
+            </div>
+            ${FeatureGrid(INPUTS)}
+          </div>
+
+          <div class="divid"></div>
+
+          <div class="project-section">
+            <div class="reveal">
+              <h2 class="sy project-section-title">What It Produces</h2>
+            </div>
+            ${FeatureGrid(OUTPUTS)}
+          </div>
+
+          <div class="divid"></div>
+
+          <div class="reveal project-section">
+            <h2 class="sy project-section-title">Design Constraints</h2>
+            <p class="project-section-body">
+              Like the IIS Log Viewer, this is a single HTML file that runs entirely
+              in the browser — nothing is uploaded anywhere. uvdiag captures come from
+              live client banking environments, so keeping every byte local wasn't
+              optional. It runs from a locked-down support workstation with no install
+              and no network access, including the in-browser unpacking of
+              <code class="inline-code">.tar.gz</code> archives.
+            </p>
+            <p class="project-section-body">
+              The wait-for analysis is modelled on the approach used by UniVerse's own
+              BLOCKERS.ANALYSIS routine, adapted into a visual, interactive form.
+              Because the tool is built for and used in Ultradata's client support
+              work, the source code is internal-only — this page describes the
+              engineering, not the artefact.
+            </p>
           </div>
 
         </div>
