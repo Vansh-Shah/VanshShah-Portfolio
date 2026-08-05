@@ -2,7 +2,7 @@
 import { html }  from './html.js';
 import { Icons } from './icons.js';
 
-const NAV_PAGES = ['home', 'story', 'work', 'education', 'projects', 'contact'];
+const NAV_PAGES = ['home', 'story', 'work', 'education', 'projects', 'toolkit', 'contact'];
 
 function NavLink(page) {
   const label = page.charAt(0).toUpperCase() + page.slice(1);
@@ -15,6 +15,29 @@ function IconLink(href, ariaLabel, icon, extra = '') {
     <a href="${href}" ${extra} class="footer-icon" aria-label="${ariaLabel}">${icon}</a>`;
 }
 
+let clockStarted = false;
+
+function tickClock() {
+  const el = document.getElementById('footerClock');
+  if (!el) return;
+  let s;
+  try {
+    s = new Date().toLocaleTimeString('en-AU', {
+      timeZone: 'Australia/Melbourne', hour: 'numeric', minute: '2-digit', hour12: true,
+    });
+  } catch (e) {
+    s = new Date().toLocaleTimeString();
+  }
+  el.textContent = s;
+}
+
+function initClock() {
+  tickClock();
+  if (clockStarted) return;
+  clockStarted = true;
+  setInterval(tickClock, 1000);
+}
+
 export function renderFooter() {
   document.getElementById('site-footer').innerHTML = html`
     <div class="wrap footer-inner">
@@ -22,8 +45,11 @@ export function renderFooter() {
       <div class="footer-top">
         <div class="footer-identity">
           <div class="sy footer-name">Vansh Shah</div>
-          <div class="footer-sub">Assistant Technical Support Manager · Ultradata Australia</div>
-          <div class="footer-sub">Melbourne, VIC</div>
+          <div class="footer-sub">Keeping banks running. Building what's next.</div>
+          <div class="footer-clock">
+            <span class="footer-clock-dot" aria-hidden="true"></span>
+            Melbourne · <span id="footerClock" class="footer-clock-time"></span>
+          </div>
         </div>
         <nav aria-label="Footer navigation" class="footer-nav">
           ${NAV_PAGES.map(NavLink).join('')}
@@ -40,6 +66,8 @@ export function renderFooter() {
       </div>
 
     </div>`;
+
+  initClock();
 
   // Wire footer nav buttons (goTo is on window)
   document.querySelectorAll('.footer-nav-btn').forEach(btn => {

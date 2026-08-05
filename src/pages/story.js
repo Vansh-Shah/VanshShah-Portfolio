@@ -28,18 +28,21 @@ export function renderStory() {
       <section class="page-section">
         <div class="wrap">
 
-          ${secLabel('The Story')}
+          ${secLabel('The story')}
 
           <h2 class="sy reveal story-headline">
-            "Keeping banks running.<br>Building what's next."
+            Keeping banks running. Building what's next.
           </h2>
 
           <p class="reveal story-sub">
-            A career built in layers — leadership first, then technology,
-            then the intersection of both.
+            A career built in layers — leadership first, then the technology, then the place where the two meet.
           </p>
 
           ${STORY.map(Chapter).join('')}
+
+          <div class="reveal story-cta">
+            <button class="cta-secondary-btn" data-page="work">See the work →</button>
+          </div>
 
         </div>
       </section>

@@ -3,7 +3,6 @@
 // Import only what you need in each page file.
 
 import { html } from './html.js';
-import { pillsHtml } from './ui.js';
 
 // ── Section label (the small ALL-CAPS tag above every section heading) ────
 export function secLabel(text) {
@@ -34,25 +33,22 @@ export function infoGrid(items) {
   return html`<div class="info-grid reveal-group">${cells}</div>`;
 }
 
-// ── Skills toolkit (used at the bottom of the Work page) ─────────────────
-export function skillsToolkit(skills) {
-  const rows = skills.map(([category, items]) => html`
-    <div class="skill-row reveal">
-      <span class="skill-cat">${category}</span>
-      <div class="skill-pills">${pillsHtml(items)}</div>
+// ── Work categories (compact "What I work in" block on the Work page) ────
+export function workCategories(categories) {
+  const cols = categories.map(([label, items]) => html`
+    <div class="reveal work-cat">
+      <div class="work-cat-label">${label}</div>
+      <div class="work-cat-items">${items.join('<br />')}</div>
     </div>`).join('');
 
   return html`
-    <div class="divid"></div>
-    <div class="sec-lbl sec-lbl--sm reveal">
-      <span class="sec-num sec-num--sm">—</span>
-      <p class="sec-tag">The Toolkit</p>
-    </div>
-    <p class="reveal toolkit-hint">
-      Organised by capability, not by tool.
-      <span class="toolkit-hint-accent">Click any skill</span> to learn more.
-    </p>
-    <div id="skills-container">${rows}</div>`;
+    <div class="work-cats-wrap">
+      <div class="sec-lbl sec-lbl--sm reveal">
+        <span class="sec-num sec-num--sm">—</span>
+        <p class="sec-tag">What I work in</p>
+      </div>
+      <div class="work-cats reveal-group">${cols}</div>
+    </div>`;
 }
 
 // ── Job metrics row (stat cards inside a job entry) ───────────────────────
@@ -89,8 +85,6 @@ export function jobEntry(job) {
           <a href="${job.website}" target="_blank" rel="noopener noreferrer"
              class="job-website-link">Visit website ↗</a>` : ''}
       </div>
-
-      ${job.promoted ? html`<p class="job-promoted">${job.promoted}</p>` : ''}
 
       ${jobMetrics(job.metrics)}
 

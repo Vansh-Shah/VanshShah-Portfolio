@@ -1,12 +1,12 @@
-// ── router.js — navigation & phrase ticker ───────────────────────────────
+// ── router.js — navigation ────────────────────────────────────────────────
 import { renderHome, initHome } from '../pages/home.js';
 import { renderStory }     from '../pages/story.js';
 import { renderWork }      from '../pages/work.js';
 import { renderEducation } from '../pages/education.js';
 import { renderProjects, initProjects, initProjectDetail, openProject } from '../pages/projects.js';
+import { renderToolkit, initToolkit } from '../pages/toolkit.js';
 import { renderContact, initContact } from '../pages/contact.js';
 import { initReveal, animateCounters } from './ui.js';
-import { PHRASES } from '../data.js';
 
 const PAGES = {
   home:      renderHome,
@@ -14,16 +14,11 @@ const PAGES = {
   work:      renderWork,
   education: renderEducation,
   projects:  renderProjects,
+  toolkit:   renderToolkit,
   contact:   renderContact,
 };
 
-let currentPage    = 'home';
-let phraseInterval = null;
-let phraseIdx      = 0;
-
 export function goTo(page, pushState = true) {
-  currentPage = page;
-
   if (pushState) {
     history.pushState({ page }, '', `#${page}`);
   }
@@ -44,40 +39,26 @@ export function goTo(page, pushState = true) {
   const main = document.getElementById('main');
   if (main) main.focus();
 
+  // Generic wiring for any [data-page] button rendered by a page (CTAs,
+  // "elsewhere on this site" cards, back-to-work links, etc.)
+  document.querySelectorAll('#main [data-page]').forEach(el => {
+    el.addEventListener('click', () => goTo(el.dataset.page));
+  });
+
   // Wire up reveal animations after DOM settles
   requestAnimationFrame(() => requestAnimationFrame(() => {
     initReveal();
     if (page === 'home') {
       initHome();
-      startPhrases();
       setTimeout(animateCounters, 300);
     }
-    if (page === 'contact') initContact();
+    if (page === 'contact')  initContact();
+    if (page === 'toolkit')  initToolkit();
     if (page === 'projects') {
       initProjects();
       initProjectDetail();
     }
   }));
-}
-
-function startPhrases() {
-  if (phraseInterval) clearInterval(phraseInterval);
-  phraseIdx = 0;
-  phraseInterval = setInterval(() => {
-    const el = document.getElementById('phrase');
-    if (!el) { clearInterval(phraseInterval); return; }
-    el.style.opacity   = '0';
-    el.style.transform = 'translateY(8px)';
-    setTimeout(() => {
-      phraseIdx = (phraseIdx + 1) % PHRASES.length;
-      const e2 = document.getElementById('phrase');
-      if (e2) {
-        e2.textContent     = PHRASES[phraseIdx];
-        e2.style.opacity   = '1';
-        e2.style.transform = 'translateY(0)';
-      }
-    }, 380);
-  }, 2800);
 }
 
 // Navigate to whatever the URL hash says — used on initial page load so

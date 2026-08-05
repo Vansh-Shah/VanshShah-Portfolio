@@ -7,23 +7,23 @@
   <!-- Fonts: preconnect + non-blocking stylesheet (was a render-blocking @import in CSS) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
   <!-- Canonical URL -->
   <link rel="canonical" href="https://vansh-shah.github.io/VanshShah-Portfolio/" />
 
   <!-- SEO -->
   <title>Vansh Shah — Banking Infrastructure & Cybersecurity</title>
-  <meta name="description" content="Assistant Technical Support Manager at Ultradata Australia. Six years of leadership, two years in fintech, now pursuing a Master of Cybersecurity at UNSW." />
+  <meta name="description" content="Technical Support Consultant at Ultradata Australia. Six years of leadership, two years in fintech, now pursuing a Master of Cybersecurity at UNSW." />
   <meta name="author" content="Vansh Shah" />
   <meta name="robots" content="index, follow" />
-  <meta name="keywords" content="Vansh Shah, cybersecurity, banking technology, technical support, Ultradata, UNSW, Melbourne, fintech, incident response" />
+  <meta name="keywords" content="Vansh Shah, cybersecurity, banking technology, technical support, Ultradata, UNSW, Melbourne, fintech, incident response, toolkit" />
 
   <!-- Open Graph -->
   <meta property="og:type"        content="website" />
   <meta property="og:url"         content="https://vansh-shah.github.io/VanshShah-Portfolio/" />
   <meta property="og:title"       content="Vansh Shah — Banking Infrastructure & Cybersecurity" />
-  <meta property="og:description" content="Assistant Technical Support Manager at Ultradata Australia. Six years of leadership, two years in fintech, now pursuing a Master of Cybersecurity at UNSW." />
+  <meta property="og:description" content="Technical Support Consultant at Ultradata Australia. Six years of leadership, two years in fintech, now pursuing a Master of Cybersecurity at UNSW." />
   <meta property="og:image"       content="https://vansh-shah.github.io/VanshShah-Portfolio/og-preview.svg" />
   <meta property="og:image:width"  content="1200" />
   <meta property="og:image:height" content="630" />
@@ -33,7 +33,7 @@
   <!-- Twitter card -->
   <meta name="twitter:card"        content="summary_large_image" />
   <meta name="twitter:title"       content="Vansh Shah — Banking Infrastructure & Cybersecurity" />
-  <meta name="twitter:description" content="Assistant Technical Support Manager at Ultradata Australia. Six years of leadership, two years in fintech, now pursuing a Master of Cybersecurity at UNSW." />
+  <meta name="twitter:description" content="Technical Support Consultant at Ultradata Australia. Six years of leadership, two years in fintech, now pursuing a Master of Cybersecurity at UNSW." />
   <meta name="twitter:image"       content="https://vansh-shah.github.io/VanshShah-Portfolio/og-preview.svg" />
 
   <!-- JSON-LD Structured Data -->
@@ -44,7 +44,7 @@
     "name": "Vansh Shah",
     "url": "https://vansh-shah.github.io/VanshShah-Portfolio/",
     "image": "https://vansh-shah.github.io/VanshShah-Portfolio/og-preview.svg",
-    "jobTitle": "Assistant Technical Support Manager",
+    "jobTitle": "Technical Support Consultant",
     "worksFor": {
       "@type": "Organization",
       "name": "Ultradata Australia",
@@ -81,7 +81,7 @@
       "NPP Payments",
       "Risk Governance"
     ],
-    "description": "Assistant Technical Support Manager at Ultradata Australia, managing core banking systems for mutual banks and credit unions across Australia. Pursuing a Master of Cybersecurity at UNSW."
+    "description": "Technical Support Consultant at Ultradata Australia, working core banking systems for mutual banks and credit unions across Australia. Pursuing a Master of Cybersecurity at UNSW."
   }
   </script>
 
@@ -93,13 +93,18 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
   <!-- Theme colour -->
-  <meta name="theme-color" content="#0D0D0C" id="themeColorMeta" />
-  <script type="module" crossorigin src="/VanshShah-Portfolio/assets/index-tVp9llGX.js"></script>
-  <link rel="stylesheet" crossorigin href="/VanshShah-Portfolio/assets/index-ClWcovPP.css">
+  <meta name="theme-color" content="#09090B" id="themeColorMeta" />
+  <script type="module" crossorigin src="/VanshShah-Portfolio/assets/index-CWez67LS.js"></script>
+  <link rel="stylesheet" crossorigin href="/VanshShah-Portfolio/assets/index-CeApdvNb.css">
 </head>
 <body>
 
 <div id="app" class="dark">
+  <div class="bg-glow" aria-hidden="true">
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
+  </div>
+
   <div class="progress" id="prog" style="width:0%" role="progressbar" aria-hidden="true"></div>
 
   <!-- Skip link -->
@@ -113,8 +118,11 @@
       <button class="np" id="nav-work"      role="menuitem" aria-label="Work experience">Work</button>
       <button class="np" id="nav-education" role="menuitem" aria-label="Education">Education</button>
       <button class="np" id="nav-projects"  role="menuitem" aria-label="Projects">Projects</button>
+      <button class="np" id="nav-toolkit"   role="menuitem" aria-label="Toolkit">Toolkit</button>
       <button class="np" id="nav-contact"   role="menuitem" aria-label="Contact me">Contact</button>
-      <button class="togb" id="togBtn" aria-label="Switch to light mode" aria-pressed="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg></button>
+      <button class="togb" id="togBtn" aria-label="Switch to light mode" aria-pressed="true">
+        <span class="togb-dot" aria-hidden="true"></span><span id="togLabel">Light</span>
+      </button>
       <button class="hamburger" id="hamburgerBtn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobileMenu">
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
@@ -130,11 +138,11 @@
     <button class="np" id="mnav-work"      role="menuitem">Work</button>
     <button class="np" id="mnav-education" role="menuitem">Education</button>
     <button class="np" id="mnav-projects"  role="menuitem">Projects</button>
+    <button class="np" id="mnav-toolkit"   role="menuitem">Toolkit</button>
     <button class="np" id="mnav-contact"   role="menuitem">Contact</button>
   </div>
 
   <main id="main" tabindex="-1" aria-live="polite" aria-label="Page content"></main>
-  <div id="skill-popup" class="skill-popup" style="display:none" role="tooltip" aria-live="polite"></div>
   <footer id="site-footer" role="contentinfo" aria-label="Site footer"></footer>
 </div>
 

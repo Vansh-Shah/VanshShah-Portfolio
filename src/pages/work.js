@@ -1,7 +1,7 @@
 // ── pages/work.js ─────────────────────────────────────────────────────────
-import { html }                              from '../components/html.js';
-import { secLabel, jobEntry, skillsToolkit } from '../components/helpers.js';
-import { EXPERIENCE, SKILLS }                from '../data.js';
+import { html }                                from '../components/html.js';
+import { secLabel, jobEntry, workCategories }  from '../components/helpers.js';
+import { EXPERIENCE, WORK_CATEGORIES }         from '../data.js';
 
 // ── Page render ───────────────────────────────────────────────────────────
 
@@ -19,8 +19,10 @@ export function renderWork() {
         <div class="wrap">
 
           ${secLabel('Work')}
+          <h1 class="sy reveal work-headline">Where the experience comes from.</h1>
           ${jobs}
-          ${skillsToolkit(SKILLS)}
+          <div class="divid"></div>
+          ${workCategories(WORK_CATEGORIES)}
 
         </div>
       </section>

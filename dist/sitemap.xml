@@ -26,6 +26,11 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://vansh-shah.github.io/VanshShah-Portfolio/#toolkit</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://vansh-shah.github.io/VanshShah-Portfolio/#contact</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
