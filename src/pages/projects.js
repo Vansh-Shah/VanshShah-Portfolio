@@ -5,22 +5,38 @@ import { PROJECTS }          from '../data.js';
 
 // ── Project list ──────────────────────────────────────────────────────────
 
-function ProjectCard(p) {
+// The lead project gets a wide feature cell; the rest fall into a 2-col grid.
+function FeaturedCard(p) {
   return html`
-    <button class="project-row" data-project-id="${p.id}" aria-label="View ${p.title} details">
-      <div class="project-row-main">
-        <div class="project-tag">${p.tag}</div>
-        <div class="sy project-row-title">${p.title}</div>
-        <div class="project-row-blurb">${p.blurb}</div>
+    <button class="project-featured" data-project-id="${p.id}" aria-label="View ${p.title} details">
+      <div class="project-featured-head">
+        <span class="project-tag">${p.tag}</span>
+        <span class="project-featured-flag">Featured</span>
       </div>
-      <div class="project-row-side">
+      <div class="sy project-featured-title">${p.title}</div>
+      <p class="project-featured-blurb">${p.blurb}</p>
+      <div class="project-featured-foot">
         <span class="project-status-badge" style="color:${p.statusColor};border-color:${p.statusColor}">${p.status}</span>
-        <div class="project-row-more">Read more →</div>
+        <span class="project-featured-more">Read more →</span>
       </div>
     </button>`;
 }
 
+function ProjectCard(p) {
+  return html`
+    <button class="project-card" data-project-id="${p.id}" aria-label="View ${p.title} details">
+      <div class="project-card-head">
+        <span class="project-tag">${p.tag}</span>
+        <span class="project-status-badge" style="color:${p.statusColor};border-color:${p.statusColor}">${p.status}</span>
+      </div>
+      <div class="sy project-card-title">${p.title}</div>
+      <p class="project-card-blurb">${p.blurb}</p>
+      <span class="project-card-more">Read more →</span>
+    </button>`;
+}
+
 export function renderProjects() {
+  const [lead, ...rest] = PROJECTS;
   return html`
     <div class="page">
       <section class="page-section">
@@ -32,8 +48,11 @@ export function renderProjects() {
             Most of these started as something I needed on a live case and couldn't find. A couple came out of study.
           </p>
 
-          <div class="project-list reveal-group">
-            ${PROJECTS.map(ProjectCard).join('')}
+          <div class="reveal project-featured-wrap">
+            ${FeaturedCard(lead)}
+          </div>
+          <div class="project-grid reveal-group">
+            ${rest.map(ProjectCard).join('')}
           </div>
 
         </div>
@@ -42,7 +61,7 @@ export function renderProjects() {
 }
 
 export function initProjects() {
-  document.querySelectorAll('.project-row').forEach(card => {
+  document.querySelectorAll('.project-featured, .project-card').forEach(card => {
     card.addEventListener('click', () => openProject(card.dataset.projectId));
   });
 }
@@ -106,6 +125,20 @@ function renderProjectDetail(p) {
   const note = p.note ? html`
     <div class="reveal project-note">${p.note}</div>` : '';
 
+  const origin = p.origin ? html`
+    <div class="reveal project-origin">
+      <span class="project-origin-label">Why it exists</span>
+      <p class="project-origin-text">${p.origin}</p>
+    </div>` : '';
+
+  const findings = p.findings ? html`
+    <div class="reveal project-findings">
+      <div class="project-section-heading project-section-heading--rule">Key findings</div>
+      <div class="reveal-group project-points">
+        ${p.findings.map(f => html`<div class="project-point">${f}</div>`).join('')}
+      </div>
+    </div>` : '';
+
   return html`
     <div class="page">
       <section class="page-section">
@@ -120,6 +153,7 @@ function renderProjectDetail(p) {
           <h1 class="sy reveal project-detail-title">${p.title}</h1>
           <p class="reveal project-detail-sub">${p.overview}</p>
 
+          ${origin}
           ${links}
 
           <div class="project-detail-layout">
@@ -129,6 +163,7 @@ function renderProjectDetail(p) {
                 ${p.points.map(pt => html`<div class="project-point">${pt}</div>`).join('')}
               </div>
 
+              ${findings}
               ${codeBlock}
               ${note}
             </div>

@@ -5,6 +5,9 @@ GIT-GUIDE.md
 # ── Dependencies ──────────────────────────────────────────────────────────
 node_modules/
 
+# ── Build output (CI rebuilds and deploys this; no need to track it) ──────
+dist/
+
 # ── Vite cache ────────────────────────────────────────────────────────────
 .vite/
 
@@ -15,6 +18,19 @@ coverage/
 .env
 .env.local
 .env.*.local
+
+# ── Claude / AI assistant artifacts ──────────────────────────────────────
+.claude/
+CLAUDE.local.md
+.mcp.json
+.cursor/
+.cursorrules
+.cursorignore
+.aider*
+.continue/
+.windsurf/
+.codeium/
+.github/copilot-instructions.md
 
 # ── OS files ─────────────────────────────────────────────────────────────
 .DS_Store

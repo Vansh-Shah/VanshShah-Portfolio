@@ -1,6 +1,6 @@
 // ── pages/home.js ─────────────────────────────────────────────────────────
-import { html }             from '../components/html.js';
-import { STATS, PROJECTS }  from '../data.js';
+import { html }                        from '../components/html.js';
+import { STATS, PROJECTS, PRINCIPLES } from '../data.js';
 
 // ── Page-specific data (edit here to update the home page) ────────────────
 
@@ -48,6 +48,14 @@ function NavCard({ page, title, sub }) {
     </button>`;
 }
 
+function PrincipleCard([title, body]) {
+  return html`
+    <div class="principle-card">
+      <div class="sy principle-title">${title}</div>
+      <p class="principle-body">${body}</p>
+    </div>`;
+}
+
 // ── Page render ───────────────────────────────────────────────────────────
 
 export function renderHome() {
@@ -61,6 +69,8 @@ export function renderHome() {
 
           <h1 class="sy hero-headline reveal">Technical support for the systems banks run on.</h1>
 
+          <p class="hero-thesis reveal">Two years fixing live banking incidents — now studying to prevent them.</p>
+
           <p class="hero-body reveal">
             Core banking, NPP payments and AML platforms for mutual banks and credit unions
             across Australia. I work priority issues directly with clients — on site and
@@ -70,6 +80,11 @@ export function renderHome() {
           <div class="hero-cta reveal">
             <button class="cta-primary-btn" data-page="contact">Get in touch</button>
             <button class="cta-secondary-btn" data-page="story">Read the story →</button>
+          </div>
+
+          <div class="hero-orgs reveal" aria-label="Where I work and study">
+            <span class="hero-orgs-label">Across</span>
+            <span class="hero-orgs-list">Ultradata Australia<span class="hero-orgs-dot">·</span>UNSW Sydney<span class="hero-orgs-dot">·</span>RMIT University</span>
           </div>
 
           <div class="stat-grid reveal-group">
@@ -96,6 +111,17 @@ export function renderHome() {
           </div>
           <div class="work-cards reveal-group">
             ${SELECTED_WORK.map(WorkCard).join('')}
+          </div>
+        </div>
+      </section>
+
+      <section class="principles-section">
+        <div class="wrap">
+          <div class="reveal section-row">
+            <p class="nav-section-label">How I work when it counts</p>
+          </div>
+          <div class="principles-grid reveal-group">
+            ${PRINCIPLES.map(PrincipleCard).join('')}
           </div>
         </div>
       </section>

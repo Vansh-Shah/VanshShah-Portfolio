@@ -75,6 +75,13 @@ export function renderToolkit() {
             <div class="toolkit-count" id="toolkitCount">${CountHtml()}</div>
           </div>
 
+          <div class="reveal toolkit-legend">
+            <span class="toolkit-legend-label">How often:</span>
+            <span class="toolkit-legend-item"><span class="toolkit-legend-dot toolkit-legend-dot--daily"></span>Daily</span>
+            <span class="toolkit-legend-item"><span class="toolkit-legend-dot"></span>Regular</span>
+            <span class="toolkit-legend-item"><span class="toolkit-legend-dot"></span>Learning</span>
+          </div>
+
           <div class="toolkit-layout reveal-group">
             <div class="tool-grid" id="toolkitGrid">${GridHtml()}</div>
             <div class="toolkit-panel" id="toolkitPanel">${PanelHtml()}</div>

@@ -5,7 +5,15 @@ export const STATS = [
   { display: '6+',  count: '6',  suffix: '+', label: 'Yrs leading teams' },
   { display: '2+',  count: '2',  suffix: '+', label: 'Yrs in fintech'    },
   { display: '80%', count: '80', suffix: '%', label: 'Masters average', accent: true },
-  { display: '3rd', count: null,              label: 'RoboCup intl 2024' },
+  { display: '3rd', count: null,              label: 'RoboCup 2024' },
+];
+
+// How I work — operating principles shown on the home page.
+export const PRINCIPLES = [
+  ['Read before you theorise.',        'Logs first, theory second. Most incidents are already explained in the data — the discipline is looking before guessing.'],
+  ['Communication is half the fix.',   'During an outage, a client who knows what’s happening and when trusts the process. Managing that is as much the job as the resolution.'],
+  ['Calm is a skill, not a temperament.', 'Earned shift by shift on a retail front end long before a live banking incident. It’s the thing that holds when systems don’t.'],
+  ['Build the tool the second time.',  'If I’ve done something by hand mid-incident twice, it becomes a tool. Most of what I’ve built started exactly there.'],
 ];
 
 export const CATS = [
@@ -88,9 +96,10 @@ export const EXPERIENCE = [
     loc:      'Malvern, Victoria',
     dates:    'Feb 2024 — Present',
     context:  'Ultradata powers the technology behind mutual banks and credit unions across Australia — core banking, payment infrastructure and AML compliance systems. When systems fail in banking, real people feel it. This is the team that fixes it.',
-    metrics:  [['30+', 'Cases / month'], ['#1', 'Escalation point']],
+    metrics:  [['30+', 'Cases / month'], ['10+', 'Prod deployments'], ['50+', 'On-call incidents'], ['#1', 'Escalation point']],
     points: [
       'Meet clients on priority issues — on site and online — and walk through ongoing cases with them',
+      'Owned hundreds of critical tickets end to end, from first contact through to resolution',
       'Implement technical changes and releases directly into client production environments',
       'Install and upgrade client systems to new software versions and patch releases',
       'Maintain SQL databases including reporting and AML systems across client environments',
@@ -99,7 +108,7 @@ export const EXPERIENCE = [
       'Configure IIS for hosting and troubleshooting client-facing web applications',
       'Respond to application outages and NPP payment failures under time pressure',
       'Write knowledge base and technical documentation to sharpen team efficiency',
-      'Help new team members get the context they need to come up to speed',
+      'Onboarded 5+ new team members, giving them the context to come up to speed fast',
     ],
   },
   {
@@ -108,6 +117,7 @@ export const EXPERIENCE = [
     loc:     'Highett, Victoria',
     dates:   'Aug 2018 — Nov 2024',
     context: 'Six years of managing people, pressure and process — before a single SQL query. The instinct for calm communication and holding a team together when things go wrong was built here.',
+    metrics: [['6 yrs', 'Front-end lead'], ['Team', 'Trained & led']],
     points: [
       'Led and supervised front-end operations at consistently high service standards',
       'Trained and mentored new and existing staff, improving team efficiency',
@@ -124,11 +134,12 @@ export const EXPERIENCE = [
     badge:   '3rd Place · Intl',
     website: 'https://redbackbots.com/',
     context: 'An RMIT team that took on the world, finishing third in the Challenge Shield Division at the 2024 international RoboCup — and learning what it takes to deliver against real deadlines.',
+    metrics: [['3rd', 'Intl 2024'], ['Code', 'Open-sourced']],
     points: [
       'Led a multidisciplinary team preparing robots for the 2024 competition',
       'Developed marketing strategy and acquired sponsors',
       'Managed project timelines using Agile methodologies',
-      'Released the codebase publicly, contributing to open source',
+      'Helped drive the 2023 public code release — the team’s first open-source contribution',
     ],
   },
 ];
@@ -212,6 +223,7 @@ export const PROJECTS = [
     status:      'Live',
     statusColor: 'var(--ok)',
     blurb:       'Parallel certificate expiry checks across many domains, GUI and CLI, zero dependencies.',
+    origin:      'An expired certificate took a client-facing banking service down with no warning, mid-morning. Once was enough.',
     overview:    'A desktop GUI and CLI tool that checks SSL/TLS certificate expiry across many domains at once. It came out of managing certificates across live and development banking environments, where an expired cert takes a client-facing service down with no warning.',
     points: [
       'Checks certificate expiry across multiple domains in parallel, so a long domain list still returns in seconds',
@@ -234,6 +246,7 @@ export const PROJECTS = [
     status:      'Live',
     statusColor: 'var(--ok)',
     blurb:       'Single-file, client-side W3C log triage with a live histogram and substatus decoding.',
+    origin:      'Triaging a failing endpoint meant scrolling raw W3C logs by hand while a client waited.',
     overview:    'A single-file, fully client-side viewer for W3C IIS log files, built for fast IP and user-agent triage during an incident. Drop a log in, find the failing endpoint, hand back an answer. Logs never leave the browser, which is what makes it usable on client data.',
     points: [
       'Filter, sort and search requests across a full log file with no server component',
@@ -256,6 +269,7 @@ export const PROJECTS = [
     status:      'Internal',
     statusColor: 'var(--warn)',
     blurb:       'Blocker and deadlock reporting from UniVerse uvdiag captures, with a wait-for graph.',
+    origin:      'A live lock storm on UniVerse, and a raw uvdiag capture too slow to read while everything blocked.',
     overview:    'A browser-based analyser for UniVerse uvdiag captures. Reading a raw capture during a live lock incident is slow and error-prone; this reads the whole thing and reports who is blocking whom.',
     points: [
       'Ingests port status, LIST.READU EVERY output and lock daemon logs — or the whole .tar.gz at once',
@@ -276,6 +290,13 @@ export const PROJECTS = [
     status:      'Published',
     statusColor: 'var(--ok)',
     blurb:       'A 59-page security engineering analysis of QR code systems, from threat model to controls.',
+    origin:      'A formal security-engineering brief: take QR codes from threat model through to practical, layered controls.',
+    findings: [
+      'Mapped the full QR attack surface with STRIDE — spoofing and tampering dominate, because the payload is invisible to the person scanning it',
+      'Quishing and physical sticker-replacement need no software vulnerability; they exploit trust in the code itself',
+      'Data-flow analysis put the weak point at scan time, where trust is placed but hardest to verify',
+      'Recommended layered controls — cryptographic signing and PKI where feasible, backed by process and user-facing design, not technology alone',
+    ],
     overview:    'A structured security engineering analysis of QR codes in digital systems, completed for the Principles of Security Engineering unit at UNSW. It works from a formal threat model through to layered, practical recommendations.',
     points: [
       'STRIDE threat modelling and attack trees across the full QR code lifecycle',
@@ -296,12 +317,13 @@ export const PROJECTS = [
     status:      '3rd Intl',
     statusColor: 'var(--accent)',
     blurb:       'Third internationally in the 2024 Challenge Shield Division with RMIT RedBackBots.',
+    origin:      'Get a multidisciplinary robotics team funded and competition-ready against a fixed international deadline.',
     overview:    'The RMIT RedBackBots capstone: preparing autonomous robots for the 2024 international RoboCup. The team placed third in the Challenge Shield Division. My side of it was leading the team and getting it to the competition on time and funded.',
     points: [
       'Led a multidisciplinary team through preparation for the international competition',
       'Managed project timelines on Agile cycles across a mixed-skill team',
       'Built the marketing approach and acquired sponsors to fund the campaign',
-      'Ran version control and released the full codebase publicly as open source',
+      'A key driving force behind the team’s 2023 public code release — its first open-source contribution, run through Git',
     ],
     stack:       ['Agile', 'Git', 'Team leadership', 'C++'],
     context:     'Capstone project, RMIT Bachelor of Information Technology.',
@@ -315,12 +337,13 @@ export const PROJECTS = [
     status:      'Live',
     statusColor: 'var(--ok)',
     blurb:       'Rebuilt from a single-page résumé into a narrative site with an interactive toolkit.',
+    origin:      'A résumé page couldn’t show how the tools and the day job actually connect.',
     overview:    'Rebuilt from a single-page résumé layout into a narrative-driven multi-page site: story, work, education, an interactive toolkit, six project write-ups and contact. Content is separated from rendering, so updating a job, a tool or a project is a one-line edit.',
     points: [
       'Nine routes client-side, including a detail page per project with prev/next navigation',
       'Interactive toolkit: 19 tools filtered by category, each opening a panel that links through to the project it produced',
       'Dark and light themes that follow the visitor’s system preference on first visit and persist after that',
-      'Motion layer — staggered hero entrance, counting stats, scroll reveals, drifting background bloom, scroll progress — with a full prefers-reduced-motion path',
+      'Motion layer — staggered hero entrance, counting stats, scroll reveals, scroll progress — kept lightweight for low-powered devices, with a full prefers-reduced-motion path',
       'Live Melbourne clock, and a contact form that posts without a page reload',
       'All copy held in one content module, so nothing about the design has to be touched to update it',
     ],

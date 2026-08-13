@@ -42,11 +42,18 @@ export function animateCounters() {
 
 // ── Scroll progress bar ──
 
+let progressTicking = false;
 function updateProgress() {
   const max = document.body.scrollHeight - window.innerHeight;
   document.getElementById('prog').style.width = max > 0
     ? (window.scrollY / max * 100) + '%'
     : '0%';
+}
+// Coalesce scroll events to one DOM write per frame (avoids reflow-per-event jank)
+function onScrollProgress() {
+  if (progressTicking) return;
+  progressTicking = true;
+  requestAnimationFrame(() => { updateProgress(); progressTicking = false; });
 }
 
 // ── Theme colours applied to the browser chrome (meta[theme-color]) ──
@@ -97,7 +104,7 @@ export function initUI() {
   });
 
   // Scroll progress
-  window.addEventListener('scroll', updateProgress, { passive: true });
+  window.addEventListener('scroll', onScrollProgress, { passive: true });
 
   // Mobile menu
   const hamburgerBtn = document.getElementById('hamburgerBtn');

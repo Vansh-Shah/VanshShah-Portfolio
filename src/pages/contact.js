@@ -112,8 +112,16 @@ export function renderContact() {
           <h2 class="sy reveal contact-headline">Let's talk.</h2>
           <p class="reveal contact-intro">
             Whether you're hiring, collaborating, or just want to connect —
-            fill out the form below.
+            fill out the form below, or grab my email directly.
           </p>
+
+          <div class="reveal contact-quick">
+            <button class="copy-email-btn" id="copyEmailBtn" type="button"
+                    data-email="svansh3212@gmail.com" aria-label="Copy email address to clipboard">
+              <span class="copy-email-addr">svansh3212@gmail.com</span>
+              <span class="copy-email-action" id="copyEmailAction">Copy</span>
+            </button>
+          </div>
 
           <div class="contact-layout">
             <div class="reveal contact-form-wrap">
@@ -127,9 +135,41 @@ export function renderContact() {
     </div>`;
 }
 
+// ── Copy-email button (one-tap copy, with a text fallback) ────────────────
+
+function initCopyEmail() {
+  const btn = document.getElementById('copyEmailBtn');
+  const action = document.getElementById('copyEmailAction');
+  if (!btn || !action) return;
+
+  let resetTimer = null;
+  btn.addEventListener('click', async () => {
+    const email = btn.dataset.email;
+    let ok = false;
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(email);
+        ok = true;
+      }
+    } catch { ok = false; }
+
+    action.textContent = ok ? 'Copied ✓' : 'Select & copy';
+    btn.classList.toggle('copy-email-btn--done', ok);
+    if (!ok) window.getSelection?.()?.selectAllChildren?.(btn.querySelector('.copy-email-addr'));
+
+    clearTimeout(resetTimer);
+    resetTimer = setTimeout(() => {
+      action.textContent = 'Copy';
+      btn.classList.remove('copy-email-btn--done');
+    }, 2000);
+  });
+}
+
 // ── Init (wires up the contact form after render) ─────────────────────────
 
 export function initContact() {
+  initCopyEmail();
+
   const form      = document.getElementById('contactForm');
   const note      = document.getElementById('formNote');
   const submitBtn = document.getElementById('formSubmit');
