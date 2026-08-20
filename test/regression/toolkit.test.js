@@ -9,8 +9,19 @@ import { TOOLS, CATS } from '../../src/data.js';
 
 function mountToolkit() {
   mountApp();
+  // The toggle button hands off to window.goTo('toolkit') to re-render the
+  // page in its new mode — stand in for the real router here.
+  window.goTo = () => {
+    document.getElementById('main').innerHTML = renderToolkit();
+    initToolkit();
+  };
   document.getElementById('main').innerHTML = renderToolkit();
   initToolkit();
+
+  // The page now opens in the interactive Terminal view by default; these
+  // tests cover the Grid view, so flip into it once per test.
+  const toggle = document.getElementById('toolkitModeToggle');
+  if (toggle && toggle.textContent.includes('Grid')) toggle.click();
 }
 
 describe('toolkit page', () => {

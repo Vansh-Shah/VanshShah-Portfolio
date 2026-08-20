@@ -5,6 +5,9 @@ GIT-GUIDE.md
 # ── Dependencies ──────────────────────────────────────────────────────────
 node_modules/
 
+# ── Portfolio Redesign scratch site (not part of the deployed portfolio) ──
+Portfolio Redesign/
+
 # ── Build output (CI rebuilds and deploys this; no need to track it) ──────
 dist/
 

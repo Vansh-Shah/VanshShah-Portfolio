@@ -9,22 +9,22 @@ const { unsw: UNSW, rmit: RMIT } = EDUCATION;
 
 function TagBlock(items) {
   return html`
-    <div class="reveal tag-block tag-block--plain">
+    <div class="reveal tag-block">
       <div class="tag-block-pills">${tagCloud(items)}</div>
     </div>`;
 }
 
 function UnswBlock() {
   return html`
-    <div class="reveal edu-block edu-block--accent">
+    <div class="reveal feature-card edu-block edu-block--accent">
       <div class="edu-header">
         <div>
           <span class="edu-status edu-status--accent">${UNSW.status}</span>
-          <h2 class="sy edu-degree">${UNSW.degree}</h2>
+          <h2 class="edu-degree">${UNSW.degree}</h2>
           <div class="edu-institution">${UNSW.specialisation}</div>
         </div>
         <div class="edu-avg-card">
-          <div class="sy edu-avg-num">${UNSW.average}</div>
+          <div class="edu-avg-num">${UNSW.average}</div>
           <div class="edu-avg-label">Current avg</div>
         </div>
       </div>
@@ -39,9 +39,9 @@ function UnswBlock() {
 
 function RmitBlock() {
   return html`
-    <div class="reveal edu-block">
+    <div class="reveal feature-card edu-block">
       <span class="edu-status edu-status--muted">${RMIT.status}</span>
-      <h2 class="sy edu-degree">${RMIT.degree}</h2>
+      <h2 class="edu-degree">${RMIT.degree}</h2>
       <div class="edu-institution">${RMIT.institution}</div>
 
       <p class="reveal edu-body">${RMIT.body}</p>
@@ -61,7 +61,7 @@ export function renderEducation() {
         <div class="wrap">
 
           ${secLabel('Education')}
-          <h1 class="sy reveal edu-headline">Two degrees, one direction.</h1>
+          <h1 class="reveal edu-headline">Two degrees, one direction.</h1>
           ${UnswBlock()}
           <div class="divid"></div>
           ${RmitBlock()}
