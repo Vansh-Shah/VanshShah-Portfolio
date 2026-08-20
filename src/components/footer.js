@@ -44,7 +44,7 @@ export function renderFooter() {
 
       <div class="footer-top">
         <div class="footer-identity">
-          <div class="sy footer-name">Vansh Shah</div>
+          <div class="footer-name">Vansh Shah</div>
           <div class="footer-sub">Keeping banks running. Building what's next.</div>
           <div class="footer-clock">
             <span class="footer-clock-dot" aria-hidden="true"></span>
@@ -57,7 +57,7 @@ export function renderFooter() {
       </div>
 
       <div class="footer-bottom">
-        <p class="footer-copy">© ${new Date().getFullYear()} Vansh Shah. Built by hand.</p>
+        <p class="footer-copy">© ${new Date().getFullYear()} Vansh Shah.</p>
         <div class="footer-social">
           ${IconLink('https://linkedin.com/in/vansh-shah-840b331a6', 'LinkedIn', Icons.linkedinSm, 'target="_blank" rel="noopener noreferrer"')}
           ${IconLink('https://github.com/Vansh-Shah',      'GitHub',   Icons.githubSm,   'target="_blank" rel="noopener noreferrer"')}

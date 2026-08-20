@@ -11,21 +11,21 @@ const SOCIAL_LINKS = [
     sublabel: 'Connect professionally',
     href:     'https://linkedin.com/in/vansh-shah-840b331a6',
     icon:     Icons.linkedin,
-    color:    '#0A66C2',
+    color:    '#f35b22',
   },
   {
     label:    'GitHub',
     sublabel: 'See what I\'m building',
     href:     'https://github.com/Vansh-Shah',
     icon:     Icons.github,
-    color:    'var(--ink)',
+    color:    '#141415',
   },
   {
     label:    'Email',
     sublabel: 'svansh3212@gmail.com',
     href:     'mailto:svansh3212@gmail.com',
     icon:     Icons.email,
-    color:    'var(--accent)',
+    color:    '#f35b22',
   },
 ];
 
@@ -37,7 +37,7 @@ const FORMSPREE_URL = 'https://formspree.io/f/mrevokzl';
 function SocialCard({ label, sublabel, href, icon, color }) {
   return html`
     <a href="${href}" target="_blank" rel="noopener noreferrer"
-       class="social-card" aria-label="${label}">
+       class="feature-card social-card" aria-label="${label}">
       <span class="social-card-icon" style="color:${color}">${icon}</span>
       <div class="social-card-text">
         <div class="social-card-name">${label}</div>
@@ -49,7 +49,7 @@ function SocialCard({ label, sublabel, href, icon, color }) {
 
 function ContactForm() {
   return html`
-    <form class="contact-form" id="contactForm" novalidate>
+    <form class="contact-form feature-card" id="contactForm" novalidate>
       <div class="form-group">
         <label class="form-label" for="cf-name">Name <span class="req" aria-hidden="true">*</span></label>
         <input class="form-input" type="text" id="cf-name"
@@ -79,7 +79,7 @@ function ContactForm() {
                   aria-required="true" aria-describedby="cf-message-err"></textarea>
         <p class="form-error" id="cf-message-err" aria-live="polite"></p>
       </div>
-      <button type="submit" class="form-submit" id="formSubmit">
+      <button type="submit" class="primary-btn form-submit" id="formSubmit">
         <span id="submitLabel">Send message</span>
         <span id="submitIcon" aria-hidden="true">→</span>
       </button>
@@ -91,7 +91,7 @@ function Sidebar() {
   return html`
     <div class="contact-sidebar">
       <div class="reveal">
-        <p class="sidebar-label">Find me on</p>
+        <p class="eyebrow eyebrow--muted sidebar-label">Find me on</p>
         <div class="social-cards">
           ${SOCIAL_LINKS.map(SocialCard).join('')}
         </div>
@@ -109,7 +109,7 @@ export function renderContact() {
 
           ${secLabel('Contact')}
 
-          <h2 class="sy reveal contact-headline">Let's talk.</h2>
+          <h2 class="reveal contact-headline">Let's talk.</h2>
           <p class="reveal contact-intro">
             Whether you're hiring, collaborating, or just want to connect —
             fill out the form below, or grab my email directly.

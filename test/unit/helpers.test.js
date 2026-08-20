@@ -12,7 +12,7 @@ import {
 
 describe('secLabel', () => {
   it('renders the given text inside a heading', () => {
-    expect(secLabel('Work')).toContain('<h1 class="sec-tag">Work</h1>');
+    expect(secLabel('Work')).toContain('<p class="eyebrow eyebrow--muted">Work</p>');
   });
 });
 

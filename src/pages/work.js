@@ -19,7 +19,7 @@ export function renderWork() {
         <div class="wrap">
 
           ${secLabel('Work')}
-          <h1 class="sy reveal work-headline">Where the experience comes from.</h1>
+          <h1 class="reveal work-headline">Where the experience comes from.</h1>
           ${jobs}
           <div class="divid"></div>
           ${workCategories(WORK_CATEGORIES)}

@@ -1,19 +1,19 @@
 // ── pages/projects.js ─────────────────────────────────────────────────────
-import { html }              from '../components/html.js';
-import { secLabel, backBtn, tagCloud } from '../components/helpers.js';
-import { PROJECTS }          from '../data.js';
+import { html }                                       from '../components/html.js';
+import { secLabel, backBtn, terminalPanel, kvRow }    from '../components/helpers.js';
+import { PROJECTS }                                   from '../data.js';
 
 // ── Project list ──────────────────────────────────────────────────────────
 
 // The lead project gets a wide feature cell; the rest fall into a 2-col grid.
 function FeaturedCard(p) {
   return html`
-    <button class="project-featured" data-project-id="${p.id}" aria-label="View ${p.title} details">
+    <button class="feature-card project-featured" data-project-id="${p.id}" aria-label="View ${p.title} details">
       <div class="project-featured-head">
-        <span class="project-tag">${p.tag}</span>
+        <span class="eyebrow eyebrow--muted">${p.tag}</span>
         <span class="project-featured-flag">Featured</span>
       </div>
-      <div class="sy project-featured-title">${p.title}</div>
+      <div class="project-featured-title">${p.title}</div>
       <p class="project-featured-blurb">${p.blurb}</p>
       <div class="project-featured-foot">
         <span class="project-status-badge" style="color:${p.statusColor};border-color:${p.statusColor}">${p.status}</span>
@@ -24,12 +24,12 @@ function FeaturedCard(p) {
 
 function ProjectCard(p) {
   return html`
-    <button class="project-card" data-project-id="${p.id}" aria-label="View ${p.title} details">
+    <button class="feature-card project-card" data-project-id="${p.id}" aria-label="View ${p.title} details">
       <div class="project-card-head">
-        <span class="project-tag">${p.tag}</span>
+        <span class="eyebrow eyebrow--muted">${p.tag}</span>
         <span class="project-status-badge" style="color:${p.statusColor};border-color:${p.statusColor}">${p.status}</span>
       </div>
-      <div class="sy project-card-title">${p.title}</div>
+      <div class="project-card-title">${p.title}</div>
       <p class="project-card-blurb">${p.blurb}</p>
       <span class="project-card-more">Read more →</span>
     </button>`;
@@ -43,7 +43,7 @@ export function renderProjects() {
         <div class="wrap">
 
           ${secLabel('Projects')}
-          <h1 class="sy reveal projects-headline">Tools built from the day job.</h1>
+          <h1 class="reveal projects-headline">Tools built from the day job.</h1>
           <p class="reveal projects-intro">
             Most of these started as something I needed on a live case and couldn't find. A couple came out of study.
           </p>
@@ -112,14 +112,16 @@ function renderProjectDetail(p) {
             : import.meta.env.BASE_URL.replace(/\/$/, '') + '/' + href.replace(/^\//, '');
           return html`
           <a href="${resolvedHref}" ${isExternal ? 'target="_blank" rel="noopener noreferrer"' : ''}
-             class="detail-link-btn detail-link-btn--primary">${label}</a>`;
+             class="ghost-btn detail-link-btn">${label}</a>`;
         }).join('')}
       </div>` : '';
 
+  // Terminal Code Panel for projects with a `code` field — the spec's
+  // signature dark component, reused here for real command/usage output.
   const codeBlock = p.code ? html`
     <div class="reveal project-section">
       <div class="project-section-heading">${p.codeLabel || 'Usage'}</div>
-      <pre class="code-block">${p.code}</pre>
+      ${terminalPanel(p.title, p.code)}
     </div>` : '';
 
   const note = p.note ? html`
@@ -127,7 +129,7 @@ function renderProjectDetail(p) {
 
   const origin = p.origin ? html`
     <div class="reveal project-origin">
-      <span class="project-origin-label">Why it exists</span>
+      <span class="eyebrow eyebrow--brand">Why it exists</span>
       <p class="project-origin-text">${p.origin}</p>
     </div>` : '';
 
@@ -147,10 +149,10 @@ function renderProjectDetail(p) {
           ${backBtn()}
 
           <div class="reveal project-detail-meta">
-            <span class="project-tag">${p.tag}</span>
+            <span class="eyebrow eyebrow--muted">${p.tag}</span>
             <span class="project-status-badge" style="color:${p.statusColor};border-color:${p.statusColor}">${p.status}</span>
           </div>
-          <h1 class="sy reveal project-detail-title">${p.title}</h1>
+          <h1 class="reveal project-detail-title">${p.title}</h1>
           <p class="reveal project-detail-sub">${p.overview}</p>
 
           ${origin}
@@ -169,19 +171,10 @@ function renderProjectDetail(p) {
             </div>
 
             <div class="reveal project-sidebar">
-              <div class="project-sidebar-label">Details</div>
-              <div class="project-sidebar-field">
-                <div class="project-sidebar-heading">Built with</div>
-                <div class="project-sidebar-pills">${tagCloud(p.stack)}</div>
-              </div>
-              <div class="project-sidebar-field">
-                <div class="project-sidebar-heading">Context</div>
-                <div class="project-sidebar-text">${p.context}</div>
-              </div>
-              <div class="project-sidebar-field">
-                <div class="project-sidebar-heading">Status</div>
-                <div class="project-sidebar-text">${p.statusNote}</div>
-              </div>
+              <div class="eyebrow eyebrow--muted project-sidebar-label">Details</div>
+              ${kvRow('Built with', p.stack.join(', '))}
+              ${kvRow('Context', p.context)}
+              ${kvRow('Status', p.statusNote)}
             </div>
           </div>
 

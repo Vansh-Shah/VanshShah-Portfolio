@@ -58,10 +58,11 @@ describe('app boot & routing', () => {
     expect(document.getElementById('backToProjects')).toBeTruthy();
   });
 
-  it('falls back to the home page for an unknown hash', async () => {
+  it('renders the 404 page for an unknown hash, preserving the URL', async () => {
     await bootApp('#not-a-real-page');
-    expect(document.getElementById('main').innerHTML).toContain('hero-headline');
-    expect(location.hash).toBe('#home');
+    expect(document.getElementById('main').innerHTML).toContain("doesn't exist");
+    expect(document.getElementById('main').innerHTML).toContain('not-a-real-page');
+    expect(location.hash).toBe('#not-a-real-page');
   });
 
   it('wires up the mobile nav so it navigates and closes the menu', async () => {

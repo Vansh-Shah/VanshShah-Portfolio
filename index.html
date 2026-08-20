@@ -4,10 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Fonts: preconnect + non-blocking stylesheet (was a render-blocking @import in CSS) -->
+  <!-- Fonts: preconnect + non-blocking stylesheet -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
   <!-- Canonical URL -->
   <link rel="canonical" href="https://vansh-shah.github.io/VanshShah-Portfolio/" />
@@ -86,22 +86,14 @@
   </script>
 
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-
-  <!-- Font preconnect -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="icon" type="image/svg+xml" href="/fingerprint-mark.svg" />
 
   <!-- Theme colour -->
-  <meta name="theme-color" content="#09090B" id="themeColorMeta" />
+  <meta name="theme-color" content="#fafaf8" id="themeColorMeta" />
 </head>
 <body>
 
-<div id="app" class="dark">
-  <div class="bg-glow" aria-hidden="true">
-    <div class="bg-glow-1"></div>
-    <div class="bg-glow-2"></div>
-  </div>
+<div id="app">
 
   <div class="progress" id="prog" style="width:0%" role="progressbar" aria-hidden="true"></div>
 
@@ -109,7 +101,10 @@
   <a href="#main" class="skip-link">Skip to content</a>
 
   <nav role="navigation" aria-label="Main navigation">
-    <span class="nl" id="nav-logo" role="button" tabindex="0" aria-label="Go to home page — Vansh Shah">Vansh Shah</span>
+    <span class="nl" id="nav-logo" role="button" tabindex="0" aria-label="Go to home page — Vansh Shah">
+      <img src="/fingerprint-mark.svg" alt="" class="nl-mark" width="20" height="20" />
+      Vansh Shah
+    </span>
     <div class="nav-links" role="menubar" aria-label="Site navigation">
       <button class="np" id="nav-home"      role="menuitem" aria-label="Home page">Home</button>
       <button class="np" id="nav-story"     role="menuitem" aria-label="My story">Story</button>
@@ -118,9 +113,12 @@
       <button class="np" id="nav-projects"  role="menuitem" aria-label="Projects">Projects</button>
       <button class="np" id="nav-toolkit"   role="menuitem" aria-label="Toolkit">Toolkit</button>
       <button class="np" id="nav-contact"   role="menuitem" aria-label="Contact me">Contact</button>
-      <button class="togb" id="togBtn" aria-label="Switch to light mode" aria-pressed="true">
-        <span class="togb-dot" aria-hidden="true"></span><span id="togLabel">Light</span>
+    </div>
+    <div class="nav-actions">
+      <button class="ghost-btn theme-toggle" id="themeToggle" aria-pressed="false" aria-label="Switch to dark mode">
+        <span id="themeToggleLabel">Dark</span>
       </button>
+      <button class="primary-btn" id="nav-contact-cta">Get in touch</button>
       <button class="hamburger" id="hamburgerBtn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobileMenu">
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
@@ -144,6 +142,14 @@
   <footer id="site-footer" role="contentinfo" aria-label="Site footer"></footer>
 </div>
 
+<!--
+  you found this. good instinct — reading the source before trusting the
+  surface is most of the job. head to /#toolkit, drop into the terminal,
+  and try: sudo cat secrets
+
+  password (base64): cmVzaWxpZW50
+  atob() it.
+-->
 <!-- Vite entry point -->
 <script type="module" src="/src/main.js"></script>
 

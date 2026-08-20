@@ -2,18 +2,23 @@
 // Small functions that build recurring UI patterns used across pages.
 // Import only what you need in each page file.
 
-import { html } from './html.js';
+import { html }  from './html.js';
+import { Icons } from './icons.js';
 
-// ── Section label (the small ALL-CAPS tag above every section heading) ────
+// ── Section label (small mono eyebrow above every section heading) ────────
 export function secLabel(text) {
   return html`
     <div class="sec-lbl reveal">
-      <span class="sec-num">—</span>
-      <h1 class="sec-tag">${text}</h1>
+      <p class="eyebrow eyebrow--muted">${text}</p>
     </div>`;
 }
 
-// ── Tag pill (read-only, used in education subject clouds) ────────────────
+// ── Eyebrow label — spec's uppercase JetBrains Mono category marker ───────
+export function eyebrow(text, { brand = false } = {}) {
+  return html`<p class="eyebrow ${brand ? 'eyebrow--brand' : 'eyebrow--muted'}">${text}</p>`;
+}
+
+// ── Tag pill (read-only, used in education subject clouds + project stack) ─
 export function tagPill(text) {
   return html`<span class="tag-pill">${text}</span>`;
 }
@@ -43,10 +48,7 @@ export function workCategories(categories) {
 
   return html`
     <div class="work-cats-wrap">
-      <div class="sec-lbl sec-lbl--sm reveal">
-        <span class="sec-num sec-num--sm">—</span>
-        <p class="sec-tag">What I work in</p>
-      </div>
+      ${eyebrow('What I work in')}
       <div class="work-cats reveal-group">${cols}</div>
     </div>`;
 }
@@ -56,7 +58,7 @@ export function jobMetrics(metrics) {
   if (!metrics) return '';
   const cards = metrics.map(([num, label]) => html`
     <div class="metric-card">
-      <div class="sy metric-num">${num}</div>
+      <div class="metric-num">${num}</div>
       <div class="metric-label">${label}</div>
     </div>`).join('');
 
@@ -70,10 +72,10 @@ export function jobEntry(job) {
     .join('');
 
   return html`
-    <div class="reveal">
+    <div class="reveal feature-card job-card">
       <div class="job-header">
         <div class="job-title-row">
-          <h2 class="sy job-title">${job.role}</h2>
+          <h2 class="job-title">${job.role}</h2>
           ${job.badge ? html`<span class="job-badge">${job.badge}</span>` : ''}
         </div>
         <span class="job-dates">${job.dates}</span>
@@ -99,4 +101,40 @@ export function backBtn() {
     <button class="back-btn" id="backToProjects">
       ← Back to Projects
     </button>`;
+}
+
+// ── Feature Card — spec component: white bg, hairline border, 12px radius,
+//    small orange marker icon top-left ─────────────────────────────────────
+export function featureCard(title, body) {
+  return html`
+    <div class="feature-card">
+      <span class="feature-card-icon">${Icons.markerDot}</span>
+      <div class="feature-card-title">${title}</div>
+      <p class="feature-card-body">${body}</p>
+    </div>`;
+}
+
+// ── Terminal Code Panel — spec's signature dark component ─────────────────
+// tabLabel: eyebrow text in the top tab bar (e.g. "I'M A DEVELOPER")
+// contentHtml: pre-built inner markup (caller controls syntax-colour spans)
+export function terminalPanel(tabLabel, contentHtml, { className = '' } = {}) {
+  return html`
+    <div class="terminal-panel ${className}">
+      <div class="terminal-panel-tab">
+        <span class="terminal-dot terminal-dot--r"></span>
+        <span class="terminal-dot terminal-dot--y"></span>
+        <span class="terminal-dot terminal-dot--g"></span>
+        <span class="terminal-panel-label">${tabLabel}</span>
+      </div>
+      <pre class="terminal-panel-body">${contentHtml}</pre>
+    </div>`;
+}
+
+// ── Device Detection key/value row — spec component for structured data ──
+export function kvRow(label, value) {
+  return html`
+    <div class="kv-row">
+      <div class="kv-label">${label}</div>
+      <div class="kv-value">${value}</div>
+    </div>`;
 }

@@ -8,13 +8,13 @@ import { STORY }    from '../data.js';
 function Chapter({ chapter, period, body }, index) {
   const num = String(index + 1).padStart(2, '0');
   return html`
-    <div class="story-row reveal">
+    <div class="story-row reveal feature-card">
       <div class="chapter-meta">
         <div class="chapter-num">Chapter ${num}</div>
         <div class="chapter-period">${period}</div>
       </div>
       <div class="chapter-body">
-        <h3 class="sy chapter-title">${chapter}</h3>
+        <h3 class="chapter-title">${chapter}</h3>
         <p class="chapter-text">${body}</p>
       </div>
     </div>`;
@@ -30,7 +30,7 @@ export function renderStory() {
 
           ${secLabel('The story')}
 
-          <h2 class="sy reveal story-headline">
+          <h2 class="reveal story-headline">
             Keeping banks running. Building what's next.
           </h2>
 
@@ -41,7 +41,7 @@ export function renderStory() {
           ${STORY.map(Chapter).join('')}
 
           <div class="reveal story-cta">
-            <button class="cta-secondary-btn" data-page="work">See the work →</button>
+            <button class="ghost-btn" data-page="work">See the work →</button>
           </div>
 
         </div>

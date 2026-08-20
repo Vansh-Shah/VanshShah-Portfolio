@@ -1,4 +1,7 @@
 // ── ui.js — shared UI helpers ─────────────────────────────────────────────
+// Fingerprint specs light-only (theme: light) — the dark mode toggle lives
+// separately in theme.js as a deliberate departure from the spec, so it
+// doesn't get tangled up with this file's non-theme UI wiring.
 
 // ── Scroll reveal ──
 
@@ -49,42 +52,15 @@ function updateProgress() {
     ? (window.scrollY / max * 100) + '%'
     : '0%';
 }
-// Coalesce scroll events to one DOM write per frame (avoids reflow-per-event jank)
 function onScrollProgress() {
   if (progressTicking) return;
   progressTicking = true;
   requestAnimationFrame(() => { updateProgress(); progressTicking = false; });
 }
 
-// ── Theme colours applied to the browser chrome (meta[theme-color]) ──
-const THEME_META = { dark: '#09090b', light: '#fafafc' };
-
 // ── Init (called once on boot) ──
 
 export function initUI() {
-  // Resolve theme: saved choice wins, else follow system preference.
-  // (HTML defaults to .dark, so only act when light is wanted.)
-  (function resolveTheme() {
-    let saved = null;
-    try { saved = localStorage.getItem('theme'); } catch (e) {}
-    const prefersLight = window.matchMedia
-      && window.matchMedia('(prefers-color-scheme: light)').matches;
-    const wantLight = saved === 'light' || (saved === null && prefersLight);
-    if (wantLight) {
-      const app  = document.getElementById('app');
-      const tog  = document.getElementById('togBtn');
-      const meta = document.getElementById('themeColorMeta');
-      app.classList.remove('dark');
-      if (tog) {
-        const label = document.getElementById('togLabel');
-        if (label) label.textContent = 'Dark';
-        tog.setAttribute('aria-pressed', 'false');
-        tog.setAttribute('aria-label', 'Switch to dark mode');
-      }
-      if (meta) meta.content = THEME_META.light;
-    }
-  })();
-
   // Arrow key navigation between nav buttons (WCAG menubar pattern)
   const navLinks = document.querySelector('.nav-links');
   navLinks.addEventListener('keydown', e => {
@@ -120,7 +96,6 @@ export function initUI() {
     mobileMenu.classList.add('open');
     hamburgerBtn.setAttribute('aria-expanded', 'true');
     mobileMenu.setAttribute('aria-hidden', 'false');
-    // Focus first item in mobile menu
     const firstItem = mobileMenu.querySelector('button');
     if (firstItem) firstItem.focus();
   }
@@ -131,7 +106,6 @@ export function initUI() {
     isOpen ? closeMobileMenu() : openMobileMenu();
   });
 
-  // Close mobile menu on Escape
   mobileMenu.addEventListener('keydown', e => {
     if (e.key === 'Escape') { closeMobileMenu(); hamburgerBtn.focus(); }
   });
@@ -147,16 +121,7 @@ export function initUI() {
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.goTo('home'); }
   });
 
-  // Theme toggle — swap label, persist choice, update aria + meta
-  const togBtn    = document.getElementById('togBtn');
-  const togLabel  = document.getElementById('togLabel');
-  const themeMeta = document.getElementById('themeColorMeta');
-  togBtn.addEventListener('click', () => {
-    const isDark = document.getElementById('app').classList.toggle('dark');
-    if (togLabel) togLabel.textContent = isDark ? 'Light' : 'Dark';
-    togBtn.setAttribute('aria-pressed', String(isDark));
-    togBtn.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
-    if (themeMeta) themeMeta.content = isDark ? THEME_META.dark : THEME_META.light;
-    try { localStorage.setItem('theme', isDark ? 'dark' : 'light'); } catch (e) {}
-  });
+  // Nav "Get in touch" CTA (filled button, top right)
+  const navCta = document.getElementById('nav-contact-cta');
+  navCta?.addEventListener('click', () => window.goTo('contact'));
 }
