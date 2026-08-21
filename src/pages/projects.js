@@ -2,6 +2,8 @@
 import { html }                                       from '../components/html.js';
 import { secLabel, backBtn, terminalPanel, kvRow }    from '../components/helpers.js';
 import { PROJECTS }                                   from '../data.js';
+import { pathFor }                                    from '../components/paths.js';
+import { metaFor, SITE_URL }                          from '../seo.js';
 
 // ── Project list ──────────────────────────────────────────────────────────
 
@@ -75,8 +77,22 @@ export function openProject(id, pushState = true) {
   if (!project) return false;
 
   if (pushState) {
-    history.pushState({ page: 'projects', projectId: id }, '', `#projects/${id}`);
+    history.pushState({ page: 'projects', projectId: id }, '', pathFor('projects', id));
   }
+
+  // Project detail views are their own indexable URL, so they carry their
+  // own title/description rather than inheriting the projects index's.
+  const meta = metaFor('projects', id);
+  document.title = meta.title;
+  const set = (selector, attr, value) => {
+    const el = document.querySelector(selector);
+    if (el) el.setAttribute(attr, value);
+  };
+  set('meta[name="description"]', 'content', meta.description);
+  set('link[rel="canonical"]', 'href', SITE_URL + meta.path);
+  set('meta[property="og:title"]', 'content', meta.title);
+  set('meta[property="og:description"]', 'content', meta.description);
+  set('meta[property="og:url"]', 'content', SITE_URL + meta.path);
 
   document.getElementById('main').innerHTML = renderProjectDetail(project);
   window.scrollTo(0, 0);

@@ -38,8 +38,10 @@ function initClock() {
   setInterval(tickClock, 1000);
 }
 
-export function renderFooter() {
-  document.getElementById('site-footer').innerHTML = html`
+// Pure markup, so the build-time prerender script can emit the footer into
+// static HTML without a DOM.
+export function footerHtml() {
+  return html`
     <div class="wrap footer-inner">
 
       <div class="footer-top">
@@ -66,6 +68,10 @@ export function renderFooter() {
       </div>
 
     </div>`;
+}
+
+export function renderFooter() {
+  document.getElementById('site-footer').innerHTML = footerHtml();
 
   initClock();
 

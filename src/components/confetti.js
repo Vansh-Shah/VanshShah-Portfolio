@@ -9,10 +9,12 @@
 // known compositor-layer quirk), so instead we chroma-key the black out
 // once via canvas, producing a real alpha-transparent PNG that works
 // regardless of blend-mode/compositing edge cases.
+import { asset } from './paths.js';
+
 const COLORS = ['#f35b22', '#ff5e24', '#f77c55', '#88d2c3', '#8bc5f3', '#c678dd'];
 // Runtime string, not a static import — Vite won't rewrite this for the
-// GitHub Pages base path on its own, so build it from BASE_URL ourselves.
-const BURST_SRC = import.meta.env.BASE_URL.replace(/\/$/, '') + '/confetti-burst.png';
+// GitHub Pages base path on its own, so build it from the base ourselves.
+const BURST_SRC = asset('confetti-burst.png');
 
 let injected = false;
 function injectStyles() {
@@ -81,8 +83,10 @@ function getTransparentBurst() {
   return burstDataUrlPromise;
 }
 // Kick off processing as soon as this module loads, so it's ready well
-// before a visitor actually finds the password.
-getTransparentBurst();
+// before a visitor actually finds the password. Guarded so this module can
+// also be imported by the Node-side prerender script, where Image() and
+// document don't exist.
+if (typeof window !== 'undefined') getTransparentBurst();
 
 export function fireConfetti({ count = 90, duration = 2600 } = {}) {
   injectStyles();

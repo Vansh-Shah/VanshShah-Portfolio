@@ -1,4 +1,8 @@
 // ── router.js — navigation ────────────────────────────────────────────────
+// Real path-based routing (/work, /projects/ssl-monitor) rather than hash
+// fragments, so every page is its own indexable URL. The build prerenders a
+// static HTML file per route, so a direct hit or a crawler gets real content
+// and this script only takes over for subsequent in-page navigation.
 import { renderHome, initHome } from '../pages/home.js';
 import { renderStory }     from '../pages/story.js';
 import { renderWork }      from '../pages/work.js';
@@ -8,6 +12,10 @@ import { renderToolkit, initToolkit } from '../pages/toolkit.js';
 import { renderContact, initContact } from '../pages/contact.js';
 import { renderNotFound }              from '../pages/notfound.js';
 import { initReveal, animateCounters } from './ui.js';
+import { metaFor, SITE_URL }           from '../seo.js';
+import { BASE, pathFor, parseLocation } from './paths.js';
+
+export { pathFor, parseLocation };
 
 const PAGES = {
   home:      renderHome,
@@ -19,9 +27,29 @@ const PAGES = {
   contact:   renderContact,
 };
 
-export function goTo(page, pushState = true) {
+// Keeps the tab title, meta description and canonical link in step with
+// client-side navigation — prerendered HTML already ships the right values,
+// this covers every navigation after the first paint.
+function applyMeta(page, projectId) {
+  const meta = metaFor(page, projectId);
+  document.title = meta.title;
+
+  const set = (selector, attr, value) => {
+    const el = document.querySelector(selector);
+    if (el) el.setAttribute(attr, value);
+  };
+  set('meta[name="description"]', 'content', meta.description);
+  set('link[rel="canonical"]', 'href', SITE_URL + meta.path);
+  set('meta[property="og:title"]', 'content', meta.title);
+  set('meta[property="og:description"]', 'content', meta.description);
+  set('meta[property="og:url"]', 'content', SITE_URL + meta.path);
+  set('meta[name="twitter:title"]', 'content', meta.title);
+  set('meta[name="twitter:description"]', 'content', meta.description);
+}
+
+export function goTo(page, pushState = true, projectId = null) {
   if (pushState) {
-    history.pushState({ page }, '', `#${page}`);
+    history.pushState({ page, projectId }, '', pathFor(page, projectId));
   }
 
   // Update desktop + mobile nav active states
@@ -34,6 +62,7 @@ export function goTo(page, pushState = true) {
   // Render page
   const renderer = PAGES[page] || renderHome;
   document.getElementById('main').innerHTML = renderer();
+  applyMeta(page, projectId);
 
   window.scrollTo(0, 0);
   // Move focus to main content for keyboard and screen reader users
@@ -72,28 +101,41 @@ function renderNotFoundPage(path) {
   requestAnimationFrame(() => requestAnimationFrame(() => initReveal()));
 }
 
-// Navigate to whatever the URL hash says — used on initial page load so
-// deep links like #work or #projects/ssl-monitor actually open that view.
-// An unrecognised page, or a project id that doesn't exist, renders 404.
-export function navigateFromHash() {
-  const raw = location.hash.replace('#', '');
-  const [page, projectId] = raw.split('/');
+// The site used to use hash routes (#work, #projects/ssl-monitor). Anyone
+// arriving on an old link gets swapped onto the equivalent real path rather
+// than dumped on the home page.
+function redirectLegacyHash() {
+  const hash = location.hash.replace(/^#/, '');
+  if (!hash) return false;
+  const [page, projectId = null] = hash.split('/');
+  if (!PAGES[page]) return false;
 
-  if (page && !PAGES[page]) {
-    renderNotFoundPage(raw);
+  history.replaceState({ page, projectId }, '', pathFor(page, projectId));
+  goTo(page, false, projectId);
+  if (page === 'projects' && projectId && !openProject(projectId, false)) {
+    renderNotFoundPage(`projects/${projectId}`);
+  }
+  return true;
+}
+
+// Renders whatever the current URL points at — used on initial page load, so
+// a direct hit on /work or /projects/ssl-monitor opens that view.
+export function navigateFromLocation() {
+  if (redirectLegacyHash()) return;
+
+  const { page, projectId } = parseLocation();
+
+  if (!PAGES[page]) {
+    renderNotFoundPage(location.pathname.replace(BASE, ''));
     return;
   }
 
-  const target = page || 'home';
-  history.replaceState(
-    { page: target, projectId: projectId || null },
-    '',
-    target === 'projects' && projectId ? `#projects/${projectId}` : `#${target}`
-  );
-  goTo(target, false);
-  if (target === 'projects' && projectId) {
+  history.replaceState({ page, projectId }, '', pathFor(page, projectId));
+  goTo(page, false, projectId);
+
+  if (page === 'projects' && projectId) {
     const found = openProject(projectId, false);
-    if (!found) renderNotFoundPage(raw);
+    if (!found) renderNotFoundPage(`projects/${projectId}`);
   }
 }
 
@@ -101,8 +143,9 @@ export function initRouter() {
   // Handle browser back/forward and mouse back/forward buttons —
   // including in and out of project detail views
   window.addEventListener('popstate', e => {
-    const { page = 'home', projectId = null } = e.state || {};
-    goTo(page, false); // false = don't push another entry, we're navigating existing history
+    const { page = 'home', projectId = null } = e.state || parseLocation();
+    if (!PAGES[page]) { renderNotFoundPage(page); return; }
+    goTo(page, false, projectId); // false = don't push, we're moving through existing history
     if (page === 'projects' && projectId) openProject(projectId, false);
   });
 

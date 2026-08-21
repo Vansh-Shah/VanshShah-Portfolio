@@ -19,7 +19,7 @@ export default [
     },
   },
   {
-    files: ['vite.config.js', 'vitest.config.js', 'eslint.config.js'],
+    files: ['vite.config.js', 'vitest.config.js', 'eslint.config.js', 'scripts/**/*.js'],
     languageOptions: {
       globals: {
         ...globals.node,

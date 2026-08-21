@@ -3,7 +3,7 @@
 import './styles.css';
 import { initUI, initReveal, animateCounters } from './components/ui.js';
 import { renderFooter }                         from './components/footer.js';
-import { initRouter, navigateFromHash, goTo }   from './components/router.js';
+import { initRouter, navigateFromLocation, goTo } from './components/router.js';
 import { openProject }                          from './pages/projects.js';
 import { initTheme }                            from './components/theme.js';
 
@@ -16,4 +16,4 @@ initTheme();
 initUI();
 renderFooter();
 initRouter();
-navigateFromHash(); // respects deep links like #work or #projects/ssl-monitor
+navigateFromLocation(); // respects deep links like /work or /projects/ssl-monitor

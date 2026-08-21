@@ -11,7 +11,15 @@ import { renderTerminal, initTerminal }  from '../components/terminal.js';
 
 let filter   = 'all';
 let selected = 0;
-let mode     = 'terminal'; // 'terminal' | 'grid' — starts in the terminal each visit
+
+// 'terminal' | 'grid'. Desktop opens in the shell; phones open in the grid,
+// where tapping beats typing commands on a soft keyboard. Either way the
+// toggle is right there, so the shell stays discoverable on mobile.
+// (typeof guard: this module is also imported by the Node prerender script.)
+const isSmallScreen = typeof window !== 'undefined'
+  && typeof window.matchMedia === 'function'
+  && window.matchMedia('(max-width: 700px)').matches;
+let mode = isSmallScreen ? 'grid' : 'terminal';
 
 const catLabel = id => (CATS.find(c => c[0] === id) || [null, id])[1];
 

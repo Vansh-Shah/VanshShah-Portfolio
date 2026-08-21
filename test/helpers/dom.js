@@ -16,8 +16,17 @@ if (!bodyMatch) {
 
 const bodyContent = bodyMatch[1];
 
+// The SEO tags the router rewrites on navigation. Pulled from the real
+// index.html so the fixture can't drift from the tags the app expects.
+const headMatch = indexHtml.match(/<head>([\s\S]*)<\/head>/);
+const headContent = headMatch ? headMatch[1] : '';
+const seoTags = (headContent.match(/<(?:meta|link)\b[^>]*>/g) || [])
+  .filter(tag => /name="(description|twitter:)|property="og:|rel="canonical"/.test(tag))
+  .join('\n');
+
 export function mountApp() {
   document.body.innerHTML = bodyContent;
+  document.head.innerHTML = seoTags;
 
   if (!document.getElementById('themeColorMeta')) {
     const meta = document.createElement('meta');

@@ -789,8 +789,29 @@ footer { border-top: 1px solid var(--color-linen-border); background: var(--colo
 ───────────────────────────────────────────── */
 @media (max-width: 700px) {
   .nav-links { display: none; }
-  .ghost-btn { display: none; }
   .hamburger { display: flex; }
+
+  /* Only the nav's own buttons collapse on mobile — the nav links move into
+     the hamburger menu and the "Get in touch" CTA is reachable from there.
+     The theme toggle stays: it's the only way to switch themes.
+     (This rule used to hide .ghost-btn outright, which also took out every
+     secondary action on the site — project links, the toolkit view toggle,
+     the hero and 404 CTAs — since they all share that class.) */
+  .nav-actions .primary-btn { display: none; }
+  .theme-toggle { padding: 9px 14px; }
+
+  /* Secondary actions stack full-width rather than sitting in a cramped row */
+  .hero-cta { flex-direction: column; align-items: stretch; }
+  .hero-cta .primary-btn, .hero-cta .ghost-btn { width: 100%; text-align: center; }
+
+  .toolkit-head-row { flex-direction: column; align-items: stretch; }
+  .toolkit-mode-toggle { width: 100%; }
+
+  .cli-password-row { flex-direction: column; }
+  .cli-password-row .ghost-btn { width: 100%; }
+
+  .project-detail-links { flex-direction: column; align-items: stretch; }
+  .project-detail-links .ghost-btn { width: 100%; text-align: center; }
 
   .home-hero      { padding: 40px 0 0; }
   .stat-grid      { grid-template-columns: repeat(2,1fr); gap: 32px; }
@@ -816,6 +837,18 @@ footer { border-top: 1px solid var(--color-linen-border); background: var(--colo
   nav { height: 56px; }
   .mobile-menu { top: 56px; }
   .elsewhere-cards { grid-template-columns: 1fr; }
+  .stat-grid { gap: 24px 16px; }
+
+  /* The shell is usable on a phone, just tighter: shorter scrollback so the
+     prompt stays on screen above the keyboard, and 16px input text so iOS
+     doesn't zoom the viewport when it's focused. */
+  .cli-output { max-height: 260px; font-size: 12px; }
+  .cli-panel  { padding: 16px; }
+  .cli-prompt { font-size: 12px; }
+  .cli-input  { font-size: 16px; }
+  .cli-password-input { font-size: 16px; }
+  .terminal-panel { padding: 16px; }
+  .terminal-panel-body { font-size: 12px; }
 }
 
 /* ─────────────────────────────────────────────
