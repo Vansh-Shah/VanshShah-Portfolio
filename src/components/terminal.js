@@ -63,7 +63,7 @@ function currentDirLabel() {
 
 const WELCOME = [
   `<span class="cli-muted">VanshOS 2.4 LTS (on-call build) — type</span> <span class="cli-cmd">help</span> <span class="cli-muted">to get started</span>`,
-  `<span class="cli-muted">19 tools across 4 directories. ` +
+  `<span class="cli-muted">${TOOLS.length} tools across ${DIRS.length} directories. ` +
     `<span class="cli-cmd">ls</span> to look around, <span class="cli-cmd">cd</span> into one, <span class="cli-cmd">cat</span> a file.</span>`,
 ].map(l => `<div class="cli-line">${l}</div>`).join('');
 
@@ -75,7 +75,7 @@ function renderHints() {
     hints = ['ls', ...DIRS.map(([id]) => `cd ${id}`), 'tree', 'help'];
   } else {
     const files = FILES_BY_DIR[state.path[0]];
-    hints = ['ls', files[0] ? `cat ${files[0].slug}` : null, 'cd ..', 'pwd'].filter(Boolean);
+    hints = ['ls', ...files.map(f => `cat ${f.slug}`), 'cd ..', 'pwd'];
   }
   if (!hints.length) return '';
   return html`<div class="cli-hints" id="cliHints">
@@ -116,7 +116,10 @@ export function renderTerminal() {
 
 // ── Command implementations ────────────────────────────────────────────
 
+let captured = null; // when set, printRaw collects lines here (for pipes)
+
 function printRaw(htmlStr) {
+  if (captured) { captured.push(htmlStr); return; }
   const line = `<div class="cli-line">${htmlStr}</div>`;
   state.outputHtml = (state.outputHtml ?? WELCOME) + line;
   const out = document.getElementById('cliOutput');
@@ -206,6 +209,8 @@ const HELP_LINES = [
   ['tree',          'show the whole filesystem at once'],
   ['whoami',        'about me'],
   ['open <project>','jump to a project this tool produced'],
+  ['<cmd> | grep x', 'filter output (-i ignore case, -v invert, -c count)'],
+  ['grep x',        'search all tool names and descriptions (-i ignore case)'],
   ['clear',         'clear the screen'],
 ];
 
@@ -261,6 +266,66 @@ function run(raw) {
     return;
   }
 
+  execPipeline(input);
+}
+
+// ── grep / pipes ────────────────────────────────────────────────────────
+
+const plain = h => h.replace(/<[^>]+>/g, '')
+  .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
+
+// Parses grep args -> { test, invert, count } or null (after printing an error)
+function parseGrep(args) {
+  const flags = args.filter(a => /^-[ivc]+$/.test(a)).join('');
+  const pattern = args.filter(a => !/^-[ivc]+$/.test(a)).join(' ').replace(/^(["'])(.*)\1$/, '$2');
+  if (!pattern) { printText('grep: missing pattern — try `ls | grep banking`', 'cli-error'); return null; }
+  let re;
+  try { re = new RegExp(pattern, flags.includes('i') ? 'i' : ''); }
+  catch { re = new RegExp(pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), flags.includes('i') ? 'i' : ''); }
+  return { test: t => re.test(t), invert: flags.includes('v'), count: flags.includes('c') };
+}
+
+function grepLines(lines, args) {
+  const g = parseGrep(args);
+  if (!g) return null;
+  const hits = lines.filter(l => g.test(plain(l)) !== g.invert);
+  return g.count ? [String(hits.length)] : hits;
+}
+
+// `grep text` on its own: search every tool's name, what and how.
+function cmd_grep(args) {
+  const g = parseGrep(args);
+  if (!g) return;
+  let n = 0;
+  DIRS.forEach(([id]) => FILES_BY_DIR[id].forEach(t => {
+    [['name', t.name], ['what', t.what], ['how', t.how]].forEach(([, text]) => {
+      if (g.test(text) === g.invert) return;
+      n++;
+      if (!g.count) printRaw(`<span class="cli-dir">${id}/</span><span class="cli-file">${t.slug}</span><span class="cli-muted">: ${escapeHtml(text)}</span>`);
+    });
+  }));
+  if (g.count) printText(String(n));
+  else if (!n) printText('no matches', 'cli-muted');
+}
+
+function execPipeline(input) {
+  const segs = input.split('|').map(x => x.trim());
+  if (segs.length === 1) { exec(segs[0]); return; }
+
+  captured = [];
+  let lines;
+  try { exec(segs[0]); } finally { lines = captured; captured = null; }
+  for (const seg of segs.slice(1)) {
+    const [c, ...a] = seg.split(/\s+/);
+    if (c !== 'grep') { printText(`${c}: only grep works after a pipe`, 'cli-error'); return; }
+    lines = grepLines(lines, a);
+    if (!lines) return;
+  }
+  if (!lines.length) return;
+  lines.forEach(printRaw);
+}
+
+function exec(input) {
   const [cmd, ...rest] = input.split(/\s+/);
   // Accept flags on any command (ls -l, ls -la, cat -n foo, tree -a, ...) —
   // we only have one output format per command, so flags are recognised
@@ -291,6 +356,7 @@ function run(raw) {
     case 'tree':    cmd_tree(); break;
     case 'whoami':  cmd_whoami(); break;
     case 'open':    cmd_open(arg); break;
+    case 'grep':    cmd_grep(rest); break;
     case 'help':    cmd_help(); break;
     case 'clear': {
       state.outputHtml = '';

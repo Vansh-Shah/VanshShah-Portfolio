@@ -1,6 +1,6 @@
 // ── pages/home.js ─────────────────────────────────────────────────────────
 import { html }                                   from '../components/html.js';
-import { STATS, PROJECTS, PRINCIPLES }            from '../data.js';
+import { STATS, PROJECTS, PRINCIPLES, TOOLS }    from '../data.js';
 import { eyebrow, featureCard, terminalPanel }    from '../components/helpers.js';
 
 // ── Page-specific data (edit here to update the home page) ────────────────
@@ -10,16 +10,24 @@ const SELECTED_WORK = ['ssl-monitor', 'iis-log-viewer']
 
 const NAV_CARDS = [
   { page: 'story',     title: 'Story',     sub: 'Leadership, then technology, then both' },
-  { page: 'toolkit',   title: 'Toolkit',   sub: '19 tools, and where I use them'          },
+  { page: 'toolkit',   title: 'Toolkit',   sub: `${TOOLS.length} tools, and where I use them`          },
   { page: 'work',      title: 'Work',      sub: 'Ultradata, Woolworths, RoboCup'          },
   { page: 'education', title: 'Education', sub: 'UNSW and RMIT in detail'                 },
   { page: 'contact',   title: 'Contact',   sub: 'Email, LinkedIn, GitHub'                  },
 ];
 
+// [label shown, TOOLS entry whose description shows on hover/focus/tap]
 const SYSTEMS = [
-  'Ultracs Core Banking', 'UniVerse DB', 'Microsoft SQL Server',
-  'NPP payments', 'AML systems', 'IIS', 'Unix',
+  ['Ultracs Core Banking', 'Core banking platforms'], ['UniVerse DB', 'UniVerse DB'],
+  ['Microsoft SQL Server', 'Microsoft SQL Server'], ['NPP payments', 'NPP payments'],
+  ['AML systems', 'AML systems'], ['IIS', 'IIS'], ['Unix', 'Unix & scripting'],
 ];
+
+function SystemMark([label, toolName]) {
+  const t = TOOLS.find(x => x.name === toolName);
+  const tip = t ? `${t.what} ${t.how}`.replace(/"/g, '&quot;') : '';
+  return html`<span class="trust-wordmark has-tip" tabindex="0" data-tip="${tip}">${label}</span>`;
+}
 
 // ── Sub-components ────────────────────────────────────────────────────────
 
@@ -153,7 +161,7 @@ export function renderHome() {
         <div class="wrap">
           <p class="trust-eyebrow eyebrow eyebrow--muted">SYSTEMS I WORK IN</p>
           <div class="trust-row reveal-group">
-            ${SYSTEMS.map(s => html`<span class="trust-wordmark">${s}</span>`).join('')}
+            ${SYSTEMS.map(SystemMark).join('')}
           </div>
         </div>
       </section>

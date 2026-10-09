@@ -4,7 +4,7 @@
 // static HTML file per route, so a direct hit or a crawler gets real content
 // and this script only takes over for subsequent in-page navigation.
 import { renderHome, initHome } from '../pages/home.js';
-import { renderStory }     from '../pages/story.js';
+import { renderStory, initStory, cleanupStory } from '../pages/story.js';
 import { renderWork }      from '../pages/work.js';
 import { renderEducation } from '../pages/education.js';
 import { renderProjects, initProjects, initProjectDetail, openProject } from '../pages/projects.js';
@@ -59,6 +59,8 @@ export function goTo(page, pushState = true, projectId = null) {
     if (el) el.classList.add('active');
   });
 
+  cleanupStory(); // drop scroll triggers/pin from the previous page
+
   // Render page
   const renderer = PAGES[page] || renderHome;
   document.getElementById('main').innerHTML = renderer();
@@ -82,6 +84,7 @@ export function goTo(page, pushState = true, projectId = null) {
       initHome();
       setTimeout(animateCounters, 300);
     }
+    if (page === 'story')    initStory();
     if (page === 'contact')  initContact();
     if (page === 'toolkit')  initToolkit();
     if (page === 'projects') {
