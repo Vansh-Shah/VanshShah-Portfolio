@@ -19,12 +19,16 @@ export function eyebrow(text, { brand = false } = {}) {
 }
 
 // ── Tag pill (read-only, used in education subject clouds + project stack) ─
-export function tagPill(text) {
-  return html`<span class="tag-pill">${text}</span>`;
+// Accepts 'text' or ['text', 'tooltip']; tooltip shows on hover/focus/tap.
+export function tagPill(item) {
+  const [text, tip] = Array.isArray(item) ? item : [item];
+  return tip
+    ? html`<span class="tag-pill has-tip" tabindex="0" data-tip="${tip}">${text}</span>`
+    : html`<span class="tag-pill">${text}</span>`;
 }
 
 export function tagCloud(items) {
-  return items.map(tagPill).join('');
+  return items.map(i => tagPill(i)).join('');
 }
 
 // ── Info grid (2-col card grid used in education) ─────────────────────────

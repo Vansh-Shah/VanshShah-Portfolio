@@ -40,7 +40,7 @@ export const PAGE_META = {
   toolkit: {
     path: '/toolkit/',
     title: `Toolkit — ${NAME}`,
-    description: 'The 19 systems and skills I actually work in day to day — core banking, UniVerse, SQL Server, NPP payments, IIS, SSL/TLS — browsable as a grid or through an interactive shell.',
+    description: 'The 30 systems and skills I actually work in day to day — core banking, UniVerse, SQL Server, NPP payments, IIS, SSL/TLS — browsable as a grid or through an interactive shell.',
   },
   contact: {
     path: '/contact/',

@@ -2,7 +2,7 @@
 // Tool cards are styled after the spec's Accordion Use Case Item (hairline
 // border, 4px radius, orange marker + chevron) while keeping the original
 // filter/grid/detail-panel interaction rather than a literal expand/collapse
-// accordion — 19 tools in a true accordion would be a very long scroll.
+// accordion — 30 tools in a true accordion would be a very long scroll.
 import { html }                          from '../components/html.js';
 import { secLabel }                      from '../components/helpers.js';
 import { Icons }                         from '../components/icons.js';
@@ -11,6 +11,7 @@ import { renderTerminal, initTerminal }  from '../components/terminal.js';
 
 let filter   = 'all';
 let selected = 0;
+let query    = '';
 
 // 'terminal' | 'grid'. Desktop opens in the shell; phones open in the grid,
 // where tapping beats typing commands on a soft keyboard. Either way the
@@ -39,6 +40,7 @@ function shownTools() {
   return TOOLS
     .map((t, i) => Object.assign({ i }, t))
     .filter(t => filter === 'all' || t.cat === filter)
+    .filter(t => !query || `${t.name} ${t.what} ${t.how}`.toLowerCase().includes(query))
     .sort((a, b) => CADENCE_RANK[a.cadence] - CADENCE_RANK[b.cadence] || a.i - b.i);
 }
 
@@ -50,7 +52,9 @@ function CountHtml() {
 }
 
 function GridHtml() {
-  return shownTools().map(t => html`
+  const shown = shownTools();
+  if (!shown.length) return html`<p class="tool-empty">No tools match “${query}”.</p>`;
+  return shown.map(t => html`
     <button class="tool-card ${t.i === selected ? 'tool-card--active' : ''}" data-index="${t.i}">
       <span class="tool-card-icon">${Icons.markerDot}</span>
       <div class="tool-card-body">
@@ -91,6 +95,7 @@ function GridSection() {
   return html`
     <div class="reveal toolkit-filter-row">
       <div class="toolkit-chips">${ChipsHtml()}</div>
+      <input class="toolkit-search" id="toolkitSearch" type="search" placeholder="Search tools…" aria-label="Search tools" autocomplete="off" />
       <div class="toolkit-count" id="toolkitCount">${CountHtml()}</div>
     </div>
 
@@ -110,6 +115,7 @@ function GridSection() {
 export function renderToolkit() {
   filter = 'all';
   selected = 0;
+  query = '';
   return html`
     <div class="page">
       <section class="page-section">
@@ -160,6 +166,12 @@ export function initToolkit() {
     chipsEl.querySelectorAll('.toolkit-chip').forEach(c =>
       c.classList.toggle('toolkit-chip--active', c === chip));
     gridEl.innerHTML  = GridHtml();
+    countEl.textContent = CountHtml();
+  });
+
+  document.getElementById('toolkitSearch')?.addEventListener('input', e => {
+    query = e.target.value.trim().toLowerCase();
+    gridEl.innerHTML    = GridHtml();
     countEl.textContent = CountHtml();
   });
 
