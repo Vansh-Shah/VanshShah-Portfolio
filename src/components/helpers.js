@@ -142,3 +142,29 @@ export function kvRow(label, value) {
       <div class="kv-value">${value}</div>
     </div>`;
 }
+
+// ── Long-form report (project detail pages) ──────────────────────────────
+// sections: [{ title, paras?, table?: { head, rows, caption? }, after?, steps?,
+//              defs?: [[term, text]], note?: { label, text } }]
+// All text is escaped here, so report copy can contain < and &.
+const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+export function renderReport(sections = []) {
+  return sections.map((s, i) => html`
+    <section class="report-section">
+      <h2 class="report-heading"><span class="report-num">${String(i + 1).padStart(2, '0')}</span>${esc(s.title)}</h2>
+      ${(s.paras || []).map(p => `<p class="report-p">${esc(p)}</p>`).join('')}
+      ${s.table ? html`
+        <div class="report-table-wrap">
+          <table class="report-table">
+            ${s.table.caption ? `<caption>${esc(s.table.caption)}</caption>` : ''}
+            <thead><tr>${s.table.head.map(h => `<th scope="col">${esc(h)}</th>`).join('')}</tr></thead>
+            <tbody>${s.table.rows.map(r => `<tr>${r.map(c => `<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody>
+          </table>
+        </div>` : ''}
+      ${(s.after || []).map(p => `<p class="report-p">${esc(p)}</p>`).join('')}
+      ${s.steps ? `<ol class="report-steps">${s.steps.map(t => `<li>${esc(t)}</li>`).join('')}</ol>` : ''}
+      ${s.defs ? `<dl class="report-defs">${s.defs.map(([t, d]) => `<dt>${esc(t)}</dt><dd>${esc(d)}</dd>`).join('')}</dl>` : ''}
+      ${s.note ? `<p class="report-note"><strong>${esc(s.note.label)}</strong> ${esc(s.note.text)}</p>` : ''}
+    </section>`).join('');
+}

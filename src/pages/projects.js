@@ -1,6 +1,6 @@
 // ── pages/projects.js ─────────────────────────────────────────────────────
 import { html }                                       from '../components/html.js';
-import { secLabel, backBtn, terminalPanel, kvRow }    from '../components/helpers.js';
+import { secLabel, backBtn, terminalPanel, kvRow, renderReport } from '../components/helpers.js';
 import { PROJECTS }                                   from '../data.js';
 import { pathFor }                                    from '../components/paths.js';
 import { metaFor, SITE_URL }                          from '../seo.js';
@@ -157,6 +157,12 @@ function renderProjectDetail(p) {
       </div>
     </div>` : '';
 
+  const report = p.report ? html`
+    <div class="reveal project-report">
+      <div class="project-section-heading project-section-heading--rule">Full report</div>
+      ${renderReport(p.report)}
+    </div>` : '';
+
   return html`
     <div class="page">
       <section class="page-section">
@@ -193,6 +199,8 @@ function renderProjectDetail(p) {
               ${kvRow('Status', p.statusNote)}
             </div>
           </div>
+
+          ${report}
 
           <div class="reveal project-detail-nav">
             <button class="project-nav-btn" data-nav-project="${prev.id}">← ${prev.title}</button>

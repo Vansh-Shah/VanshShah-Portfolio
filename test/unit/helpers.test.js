@@ -121,3 +121,32 @@ describe('backBtn', () => {
     expect(backBtn()).toContain('id="backToProjects"');
   });
 });
+
+import { renderReport } from '../../src/components/helpers.js';
+
+describe('renderReport', () => {
+  it('numbers sections and renders paras, table, steps, defs and note', () => {
+    const out = renderReport([{
+      title: 'One', paras: ['p'], table: { head: ['A'], rows: [['1']], caption: 'cap' },
+      after: ['tail'], steps: ['s1'], defs: [['t', 'd']], note: { label: 'L', text: 'T' },
+    }, { title: 'Two' }]);
+    expect(out).toContain('>01</span>One');
+    expect(out).toContain('>02</span>Two');
+    for (const frag of ['<p class="report-p">p</p>', '<th scope="col">A</th>', '<td>1</td>', '<caption>cap</caption>',
+      '<p class="report-p">tail</p>', '<li>s1</li>', '<dt>t</dt><dd>d</dd>', '<strong>L</strong> T']) {
+      expect(out).toContain(frag);
+    }
+  });
+
+  it('escapes markup in report text', () => {
+    const out = renderReport([{ title: '<b>x</b>', paras: ['a & <script>'] }]);
+    expect(out).not.toContain('<script>');
+    expect(out).toContain('a &amp; &lt;script&gt;');
+    expect(out).toContain('&lt;b&gt;x&lt;/b&gt;');
+  });
+
+  it('renders nothing for no sections', () => {
+    expect(renderReport([])).toBe('');
+    expect(renderReport()).toBe('');
+  });
+});

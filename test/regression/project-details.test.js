@@ -28,6 +28,17 @@ describe('project detail pages', () => {
     });
   });
 
+  it('renders the full report for projects that have one, and omits it otherwise', () => {
+    mountApp();
+    const withReport = PROJECTS.find(p => p.report);
+    expect(withReport).toBeTruthy();
+    openProject(withReport.id, false);
+    expect(document.querySelectorAll('.report-section')).toHaveLength(withReport.report.length);
+    const without = PROJECTS.find(p => !p.report);
+    openProject(without.id, false);
+    expect(document.querySelector('.project-report')).toBeFalsy();
+  });
+
   it('returns false and does not throw for an id with no matching project', () => {
     mountApp();
     expect(openProject('not-a-real-project', false)).toBe(false);

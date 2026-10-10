@@ -22,6 +22,7 @@ import { renderContact }   from '../src/pages/contact.js';
 import { renderNotFound }  from '../src/pages/notfound.js';
 import { footerHtml }      from '../src/components/footer.js';
 import { PROJECTS }        from '../src/data.js';
+import { renderReport }    from '../src/components/helpers.js';
 import {
   allRoutes, metaFor, NOT_FOUND_META, SITE_URL, SITE_BASE,
 } from '../src/seo.js';
@@ -75,6 +76,7 @@ function projectDetailFallback(p) {
           <h2>What it does</h2>
           <ul>${points}</ul>
           ${findings ? `<h2>Key findings</h2><ul>${findings}</ul>` : ''}
+          ${p.report ? `<h2>Full report</h2>${renderReport(p.report)}` : ''}
           <h2>Details</h2>
           <p>Built with ${p.stack.join(', ')}. ${p.context} ${p.statusNote}</p>
           ${links}
